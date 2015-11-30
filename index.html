@@ -3,13 +3,27 @@
 <html>
     <head>
         <title> Jakes Blog</title>
-
+        <meta charset="utf-8"></meta>
     </head>
 
     <body>
-        
+        <section id="articleWrapper">
+            <article class="articlePlaceholder">
+              <header>
+                <h1>Title</h1>
+                <div class="publishDate">
+                  published
+                  <time pubdate datetime="2000-01-01">Publish date</time>
+                </div>
+              </header>
+            <section class="articleContent">Body</section>
+          </article>
+        </section>
 
 
     </body>
 
+    <script type="text/javascript" src="blog.js"></script>
+    <script type="text/javascript" src="blogArticles.js"> </script>
+    <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
 </html>
