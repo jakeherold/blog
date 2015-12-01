@@ -15,7 +15,7 @@ printArticle.prototype.toHtml = function () {
     console.log("2");
     $newArticle.append('<hr>');
     console.log("3");
-    //$newArticle.append('#authorSpot').html('<p>Author: </p> '+this.author);
+    $newArticle.find('#authorSpot').html('<p>Author: '+this.author + '</p>');
     console.log("4");
     $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
     console.log("5");
