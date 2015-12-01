@@ -17,7 +17,7 @@ printArticle.prototype.toHtml = function () {
     $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
     $newArticle.append('<hr>');
     $newArticle.find('.articleContent').html(this.body);
-    $newArticle.append('<hr>');
+    $newArticle.append('<hr><br>');
     return $newArticle;
 }
 
