@@ -4,6 +4,7 @@ function printArticle(obj) {
   this.authorUrl = obj.authorUrl;
   this.publishedOn = obj.publishedOn;
   this.body = obj.body;
+  this.category = obj.category;
 }
 
 //append article to blog
@@ -16,8 +17,11 @@ printArticle.prototype.toHtml = function () {
     $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
     $newArticle.append('<hr>');
     $newArticle.find('.articleContent').html(this.body);
+    $newArticle.find('.buttonAnchor').html('<br><button class="expandArticleText"> -> Expand Article </button><br>');
+    //console.log("button cretor firing");
     $newArticle.append('<hr><br>');
-    $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>')
+    $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>');
+    $("#categoryDropDownAnchor").append('<option value="'+this.category+'">'+this.category+'</option>');
     return $newArticle;
 }
 
@@ -41,12 +45,19 @@ $(function() {
     dataArray = new printArticle(blog.rawData[ii]);
     $('#articleWrapper').append(dataArray.toHtml());
   }
+
+  $(".expandArticleText").click(function(){
+    console.log("Expand firing 1.0");
+  });
 });
 
 
-$(".expandArticleText").click(function(){
-  console.log("Expand firing 1.0");
-});
+
+
+
+
+
+
 // //sort rawdata array
 // $(function() {
 //
