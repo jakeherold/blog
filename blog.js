@@ -1,3 +1,5 @@
+//var date = []
+
 function printArticle(obj) {
   this.title = obj.title;
   this.publishedOn = obj.publishedOn;
@@ -12,10 +14,10 @@ printArticle.prototype.toHtml = function () {
     $newArticle.find('time').html('exactly ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
     $newArticle.find('.articleContent').html(this.body);
     $newArticle.append('<hr>');
-
     console.log("print prototype works");
     return $newArticle;
 }
+
 $(function() {
   var arObj0 = {};
   var arObj1 = {};
