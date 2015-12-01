@@ -1,5 +1,7 @@
 var blog = blog || ({});
 
+
+
 // function printArticle (details) {
 //     this.title = details.title;
 //     this.category = details.category;
