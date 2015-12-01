@@ -18,20 +18,9 @@ printArticle.prototype.toHtml = function () {
     return $newArticle;
 }
 
-$(function() {
-  var arObj0 = {};
-  var arObj1 = {};
-  if (blog.rawData[0].publishedOn < blog.rawData[1].publishedOn) {
-    arObj0 = new printArticle(blog.rawData[1]);
-    arObj1 = new printArticle(blog.rawData[0]);
-  }
-  else {
-    arObj0 = new printArticle(blog.rawData[0]);
-    arObj1 = new printArticle(blog.rawData[1]);
-  }
-  console.log("Empty auto-run part one");
-  $('#articleWrapper').append(arObj0.toHtml());
-  $('#articleWrapper').append(arObj1.toHtml());
-console.log("Empty auto-run");
-  }
-);
+
+$.each(blog.rawData, function(i) {
+ $.each(blog.rawData[i], function(key,val) {
+   $('#articleWrapper').append(key+val);
+ });
+});
