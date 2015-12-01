@@ -1,5 +1,3 @@
-//var date = []
-
 function printArticle(obj) {
   this.title = obj.title;
   this.author = obj.author;
@@ -7,6 +5,7 @@ function printArticle(obj) {
   this.publishedOn = obj.publishedOn;
   this.body = obj.body;
 }
+
 //append article to blog
 printArticle.prototype.toHtml = function () {
     var $newArticle = $('.articlePlaceholder').clone();
@@ -44,6 +43,9 @@ $(function() {
 });
 
 
+$(".expandArticleText").click(function(){
+  console.log("Expand firing 1.0");
+});
 // //sort rawdata array
 // $(function() {
 //
