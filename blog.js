@@ -17,6 +17,7 @@ printArticle.prototype.toHtml = function () {
     $newArticle.append('<hr>');
     $newArticle.find('.articleContent').html(this.body);
     $newArticle.append('<hr><br>');
+    $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>')
     return $newArticle;
 }
 
