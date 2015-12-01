@@ -4,6 +4,10 @@
 }
 
 p {
-    text-align: center;
+    display: inline-flex;
     font-family: serif;
+}
+img{
+  display: block;
+  text-align: left;
 }
