@@ -12,32 +12,36 @@
         <header id="navBarHeader">
           <nav id="navBar">
             <a>Home</a>
-            <a>About</a>
+            <a id="aboutNavElement">About</a>
             <a href="https://github.com/jakeherold/blog" id="aboutNav">Github Repo</a>
           </nav>
         </header>
       </section>
 
-      <section>
+      <div id="aboutDiv">
+        <h1>About the Developer</h1>
+        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even think those are an ok thing for humans to make? </p>
+      </div>
+
+
+
+      <section id="dropDownWrapper">
+        <p>Filter by: </p>
         <section class="authorDropDownWrapper">
-          <form action="action_page.php">
             <select name="authorsDropDown" id="authorDropDownAnchor">
-              <option value="authorPlaceholder">Sort By Author</option>
+              <option value="authorPlaceholder">Author</option>
             </select>
-          </form>
         </section>
 
         <section class="categoryDropDownWrapper">
-          <form action="action_page.php">
             <select name="categoryDropDown" id="categoryDropDownAnchor">
-              <option value="categoryPlaceholder">Sort By Category</option>
+              <option value="categoryPlaceholder"> Category</option>
             </select>
-          </form>
         </section>
       </section>
 
       <section id="articleWrapper">
-        <article class="articlePlaceholder">
+        <article id="specificallyTheBoilerplate" class="articlePlaceholder">
           <header>
             <h1></h1>
               <p id="authorSpot"></p>
@@ -59,6 +63,7 @@
       <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
       <script type="text/javascript" src="blogObject.js"></script>
       <script type="text/javascript" src="blogArticles.js"></script>
+      <script type="text/javascript" src="util.js"></script>
       <script type="text/javascript" src="blog.js"></script>
 
 </html>

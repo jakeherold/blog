@@ -33,11 +33,9 @@ $(function() {
       $newArticle.append('<hr>');
       $newArticle.find('.articleContent').html(this.body);
       $newArticle.find('.articleContent').children().not('p:first').hide();
-      //$newArticle.find('p:first').show();
       $newArticle.find('.buttonAnchor').html('<br><button class="expandArticleText"> -> Expand Article </button><br>');
       $newArticle.append('<hr><br>');
-      $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>');
-      $("#categoryDropDownAnchor").append('<option value="'+this.category+'">'+this.category+'</option>');
+
       return $newArticle;
   }
 
@@ -49,10 +47,117 @@ $(function() {
     $('#articleWrapper').append(dataArray.toHtml());
   }
 
-  $(".expandArticleText").click(function(){
-    console.log("Expand firing 1.0");
-    $(this).parent().prev().children().show();
-    console.log("The JS interpret should've expanded now");
+  $(".expandArticleText").on('click',function(){
+    $(this).parent().prev().children().fadeIn();
   });
 
+  $("#aboutNavElement").on('click', function(){
+      $(this).attr("z-index","3");
+      $(this).attr("display","block");
+  });
+
+
+
+
+// $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>');
+// $("#categoryDropDownAnchor").append('<option value="'+this.category+'">'+this.category+'</option>');
+
+  function populateAuthor (){
+    var authorArray = [];
+    for (jj=0 ; jj<blog.rawData.length ; jj++){
+      authorArray.push(blog.rawData[jj].author);
+      //console.log(blog.rawData[jj].author);
+    }
+
+    console.log(authorArray);
+    return authorArray;
+  }
+  var populatedAuthorArray = populateAuthor();
+
+  // Array.prototype.getUnique = function(){
+  //    var u = {}, a = [];
+  //    for(var i = 0, l = this.length; i < l; ++i){
+  //       if(u.hasOwnProperty(this[i])) {
+  //          continue;
+  //       }
+  //       a.push(this[i]);
+  //       u[this[i]] = 1;
+  //    }
+  //    return a;
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  var populateCategory= function (){
+    var categoryArray = [];
+    for (kk=0 ; kk<blog.rawData.length ; kk++){
+      categoryArray.push(blog.rawData[kk].category);
+      //console.log(blog.rawData[kk].category);
+    }
+    console.log(categoryArray);
+    return categoryArray;
+  }
+  var populatedCategoryArray = populateCategory();
+
+
+
+
+
 });
+
+
+// //snippit from james
+
+//     //Function to put all the unique items in an array
+//     function getUnique(inputArray){
+//       var outputArray = [];
+//       for (i=0; i < inputArray.length; i++){
+//         if (($.inArray(inputArray[i], outputArray)) == -1)
+//         {
+//           outputArray.push(inputArray[i]);
+//         }
+//       }
+//       return outputArray;
+//     }
+//     //Store returned unique arrays in a variable
+//     var uniqueCategories = getUnique(categoryStrings);
+//     var uniqueAuthors = getUnique(authorStrings);
+//     //Functions to print unique arrays and option tags to the select tag
+//     function printToSelect(array, elementId){
+//       for(i=0; i<array.length; i++){
+//         $(elementId).append("<option value='"+array[i]+"'>"+array[i]+"</option>");
+//         console.log(array[i]);
+//       }
+//     }
+//     printToSelect(uniqueCategories, '#category-filter');
+//     printToSelect(uniqueAuthors, '#author-filter');
+//     //On Author select change, hide all divs not selected
+//     $('select').on('change', function (e) {
+//       var $selection = $(this).val();
+//       console.log($selection);
+//       $('article').hide();
+//       $(".authorUrl:contains('" + $selection + "')").parents('article').show();
+//     });
+//   });
