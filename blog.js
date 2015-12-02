@@ -47,20 +47,32 @@ $(function() {
     $('#articleWrapper').append(dataArray.toHtml());
   }
 
+//Button events listener that changes the display attribute relative to where the button was pressed.
   $(".expandArticleText").on('click',function(){
     $(this).parent().prev().children().fadeIn();
   });
 
+
+//Trying to pull up about page on about click. But, it doesn't wanna go. debug!
   $("#aboutNavElement").on('click', function(){
       $(this).attr("z-index","3");
       $(this).attr("display","block");
   });
 
-
-
-
-// $("#authorDropDownAnchor").append('<option value="'+this.author+'">'+this.author+'</option>');
-// $("#categoryDropDownAnchor").append('<option value="'+this.category+'">'+this.category+'</option>');
+//getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
+  var getUnique = function(array){
+    console.log("before =" + array);
+     var u = {}, a = [];
+     for(var i = 0, l = array.length; i < l; ++i){
+        if(u.hasOwnProperty(array[i])) {
+           continue;
+        }
+        a.push(array[i]);
+        u[array[i]] = 1;
+     }
+     console.log("after =" + a);
+     return a;
+  }
 
   function populateAuthor (){
     var authorArray = [];
@@ -68,26 +80,11 @@ $(function() {
       authorArray.push(blog.rawData[jj].author);
       //console.log(blog.rawData[jj].author);
     }
-
-    console.log(authorArray);
+    //console.log(authorArray);
     return authorArray;
   }
   var populatedAuthorArray = populateAuthor();
-
-  populatedAuthorArray.getUnique = function(){
-     var u = {}, a = [];
-     for(var i = 0, l = this.length; i < l; ++i){
-        if(u.hasOwnProperty(this[i])) {
-           continue;
-        }
-        a.push(this[i]);
-        u[this[i]] = 1;
-     }
-     console.log(a);
-     return a;
-  }
-  var populatedAuthorArray = populatedAuthorArray.getUnique();
-
+  var populatedAuthorArray = getUnique(populatedAuthorArray);
 
 
 
@@ -98,61 +95,30 @@ $(function() {
       categoryArray.push(blog.rawData[kk].category);
       //console.log(blog.rawData[kk].category);
     }
-    console.log(categoryArray);
+    //console.log(categoryArray);
     return categoryArray;
   }
   var populatedCategoryArray = populateCategory();
+  var populatedCategoryArray = getUnique(populatedCategoryArray);
 
-
-  populatedCategoryArray.getUnique = function(){
-     var u = {}, a = [];
-     for(var i = 0, l = this.length; i < l; ++i){
-        if(u.hasOwnProperty(this[i])) {
-           continue;
-        }
-        a.push(this[i]);
-        u[this[i]] = 1;
-     }
-     console.log(a);
-     return a;
+  //Functions to print unique arrays and option tags to the select tag
+  function printToDropdown(array, elementId){
+    for(i=0; i<array.length; i++){
+      $(elementId).append("<option value='"+array[i]+"'>"+array[i]+"</option>");
+      console.log(array[i]);
+    }
   }
-  var populatedCategoryArray = populatedCategoryArray.getUnique();
 
 
+  printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
+  printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+
+  // //On Author select change, hide all divs not selected
+  // $('select').on('change', function (e) {
+  //   var $selection = $(this).val();
+  //   console.log($selection);
+  //   $('article').hide();
+  //   $(".authorUrl:contains('" + $selection + "')").parents('article').show();
+  // });
 
 });
-
-
-// //snippit from james
-
-//     //Function to put all the unique items in an array
-//     function getUnique(inputArray){
-//       var outputArray = [];
-//       for (i=0; i < inputArray.length; i++){
-//         if (($.inArray(inputArray[i], outputArray)) == -1)
-//         {
-//           outputArray.push(inputArray[i]);
-//         }
-//       }
-//       return outputArray;
-//     }
-//     //Store returned unique arrays in a variable
-//     var uniqueCategories = getUnique(categoryStrings);
-//     var uniqueAuthors = getUnique(authorStrings);
-//     //Functions to print unique arrays and option tags to the select tag
-//     function printToSelect(array, elementId){
-//       for(i=0; i<array.length; i++){
-//         $(elementId).append("<option value='"+array[i]+"'>"+array[i]+"</option>");
-//         console.log(array[i]);
-//       }
-//     }
-//     printToSelect(uniqueCategories, '#category-filter');
-//     printToSelect(uniqueAuthors, '#author-filter');
-//     //On Author select change, hide all divs not selected
-//     $('select').on('change', function (e) {
-//       var $selection = $(this).val();
-//       console.log($selection);
-//       $('article').hide();
-//       $(".authorUrl:contains('" + $selection + "')").parents('article').show();
-//     });
-//   });
