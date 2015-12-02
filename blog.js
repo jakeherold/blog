@@ -74,37 +74,19 @@ $(function() {
   }
   var populatedAuthorArray = populateAuthor();
 
-  // Array.prototype.getUnique = function(){
-  //    var u = {}, a = [];
-  //    for(var i = 0, l = this.length; i < l; ++i){
-  //       if(u.hasOwnProperty(this[i])) {
-  //          continue;
-  //       }
-  //       a.push(this[i]);
-  //       u[this[i]] = 1;
-  //    }
-  //    return a;
-  // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  populatedAuthorArray.getUnique = function(){
+     var u = {}, a = [];
+     for(var i = 0, l = this.length; i < l; ++i){
+        if(u.hasOwnProperty(this[i])) {
+           continue;
+        }
+        a.push(this[i]);
+        u[this[i]] = 1;
+     }
+     console.log(a);
+     return a;
+  }
+  var populatedAuthorArray = populatedAuthorArray.getUnique();
 
 
 
@@ -122,6 +104,19 @@ $(function() {
   var populatedCategoryArray = populateCategory();
 
 
+  populatedCategoryArray.getUnique = function(){
+     var u = {}, a = [];
+     for(var i = 0, l = this.length; i < l; ++i){
+        if(u.hasOwnProperty(this[i])) {
+           continue;
+        }
+        a.push(this[i]);
+        u[this[i]] = 1;
+     }
+     console.log(a);
+     return a;
+  }
+  var populatedCategoryArray = populatedCategoryArray.getUnique();
 
 
 
