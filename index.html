@@ -5,41 +5,43 @@
         <title> Jakes Blog</title>
         <meta charset="utf-8"></meta>
         <link rel="stylesheet" type="text/css" href="blog.css"></link>
+        <link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
     </head>
 
-    <body>
+    <body >
       <section id="navBarWrapper">
+        <h1 id="blogName">Adventures with Lumberjake</h1>
         <header id="navBarHeader">
           <nav id="navBar">
-            <a id="homeNavElement">Home</a>
-            <a id="aboutNavElement">About</a>
-            <a href="https://github.com/jakeherold/blog" id="aboutNav">Github Repo</a>
+            <a class="navItem" id="homeNavElement">Home</a>
+            <a class="navItem" id="aboutNavElement">About</a>
+            <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
           </nav>
         </header>
       </section>
 
       <div id="aboutDiv">
         <h1>About the Developer</h1>
-        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even think those are an ok thing for humans to make? </p>
+        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even that bitter swill is an ok thing for humans to make? </p>
       </div>
 
 
 
-      <section id="dropDownWrapper">
-        <p>Filter by: </p>
+      <div id="dropDownWrapper">
+        <div id="filterByWrapper"><p>Filter by: </p></div>
 
-        <section class="authorDropDownWrapper">
+        <section class="dropdown" class="authorDropDownWrapper">
             <select name="authorsDropDown" id="authorDropDownAnchor">
               <option value="authorPlaceholder">Author</option>
             </select>
         </section>
 
-        <section class="categoryDropDownWrapper">
+        <section class="dropdown" class="categoryDropDownWrapper">
             <select name="categoryDropDown" id="categoryDropDownAnchor">
               <option value="categoryPlaceholder"> Category</option>
             </select>
         </section>
-      </section>
+      </div>
 
       <section id="articleWrapper">
         <article class="articlePlaceholder">
@@ -56,17 +58,17 @@
 
           <section class="articleContent"></section>
 
-
-          <section class="buttonAnchor"></section>
+          <!-- This part below is, admittedly, difficult to find. Checkout the printArticle Prototype for when we append the paragraph that acts like a button.-->
+          <section class="buttonThatsNotAButton"></section>
 
 
         </article>
       </section>
 
-
     </body>
 
       <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+      <script src="handlebars-v4.0.5.js"></script>
       <script type="text/javascript" src="blogObject.js"></script>
       <script type="text/javascript" src="blogArticles.js"></script>
       <script type="text/javascript" src="util.js"></script>
