@@ -4,20 +4,62 @@
     <head>
         <title> Jakes Blog</title>
         <meta charset="utf-8"></meta>
+        <link rel="stylesheet" type="text/css" href="blog.css"></link>
     </head>
 
     <body>
+      <section id="navBarWrapper">
+        <header id="navBarHeader">
+          <nav id="navBar">
+            <a id="homeNavElement">Home</a>
+            <a id="aboutNavElement">About</a>
+            <a href="https://github.com/jakeherold/blog" id="aboutNav">Github Repo</a>
+          </nav>
+        </header>
+      </section>
+
+      <div id="aboutDiv">
+        <h1>About the Developer</h1>
+        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even think those are an ok thing for humans to make? </p>
+      </div>
+
+
+
+      <section id="dropDownWrapper">
+        <p>Filter by: </p>
+
+        <section class="authorDropDownWrapper">
+            <select name="authorsDropDown" id="authorDropDownAnchor">
+              <option value="authorPlaceholder">Author</option>
+            </select>
+        </section>
+
+        <section class="categoryDropDownWrapper">
+            <select name="categoryDropDown" id="categoryDropDownAnchor">
+              <option value="categoryPlaceholder"> Category</option>
+            </select>
+        </section>
+      </section>
+
       <section id="articleWrapper">
         <article class="articlePlaceholder">
           <header>
+            <section class="categoryAnchor" style="display:none"></section>
+
             <h1></h1>
-              <p id="authorSpot"></p>
+              <p class="authorSpot"></p>
                 <div class="publishDate">
                   <time pubdate datetime="2000-01-01">
                   </time>
                 </div>
           </header>
-            <section class="articleContent"></section>
+
+          <section class="articleContent"></section>
+
+
+          <section class="buttonAnchor"></section>
+
+
         </article>
       </section>
 
@@ -27,6 +69,7 @@
       <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
       <script type="text/javascript" src="blogObject.js"></script>
       <script type="text/javascript" src="blogArticles.js"></script>
+      <script type="text/javascript" src="util.js"></script>
       <script type="text/javascript" src="blog.js"></script>
-      
+
 </html>
