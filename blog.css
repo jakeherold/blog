@@ -28,13 +28,21 @@ body{
   /*z-index: -1;*/
 }
 
+#blogName{
+  font-family: 'Cabin' ;
+}
 p {
     display: inline;
     font-family: serif;
+    font-family: 'Cabin' ;
+}
+article{
+    font-family: 'Cabin' ;
 }
 a{
   text-decoration: none;
   color: black;
+  font-family: 'Cabin' ;
 }
 img{
   display: block;
