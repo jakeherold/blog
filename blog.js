@@ -27,6 +27,7 @@ $(function() {
       var $newArticle = $('.articlePlaceholder').clone();
       $newArticle.removeClass('articlePlaceholder');
       $newArticle.addClass('realArticle');
+      $newArticle.find('.categoryAnchor').html(this.category);
       $newArticle.find('h1:first').html(this.title);
       $newArticle.append('<hr>');
       $newArticle.find('.authorSpot').html('<a href= >'+this.authorUrl+'<p>Author: <span class="authorName">'+this.author + '</span></p></a>');
@@ -130,6 +131,20 @@ $(function() {
     })
   });
 
+  $('#categoryDropDownAnchor').on('change', function(){
+    var category = $(this).val();
+    console.log(category);
+    $('.categoryAnchor').each(function(){
+      var text = $(this);
+      console.log(text);
+      if (text.text() !== category){
+        text.closest('.realArticle').hide();
+      }
+      else {
+        text.closest('.realArticle').show();
+      }
+    })
+  });
   //On Author select change, hide all divs not selected
   // $('.authorDropDownWrapper').on('change', function () {
   //   var authorPicked = $(this).val();
