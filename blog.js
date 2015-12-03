@@ -30,7 +30,7 @@ $(function() {
       $newArticle.find('.categoryAnchor').html(this.category);
       $newArticle.find('h1:first').html(this.title);
       $newArticle.append('<hr>');
-      $newArticle.find('.authorSpot').html('<a href= >'+this.authorUrl+'<p>Author: <span class="authorName">'+this.author + '</span></p></a>');
+      $newArticle.find('.authorSpot').html('<a href= '+this.authorUrl+'><p>Author: <span class="authorName">'+this.author + '</span></p></a>');
       $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
       $newArticle.append('<hr>');
       $newArticle.find('.articleContent').html(this.body);
@@ -57,8 +57,15 @@ $(function() {
 
 //Trying to pull up about page on about click. But, it doesn't wanna go. debug!
   $("#aboutNavElement").on('click', function(){
-      $(this).attr("z-index","3");
-      $(this).attr("display","block");
+      console.log("registered onclick");
+      $('#articleWrapper').fadeOut('slow');
+      $('#aboutDiv').fadeIn();
+  });
+
+  $("#homeNavElement").on('click', function(){
+      console.log("registered onclick");
+      $('#articleWrapper').fadeIn();
+      $('#aboutDiv').fadeOut('fast');
   });
 
 //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
