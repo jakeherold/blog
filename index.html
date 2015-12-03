@@ -13,9 +13,9 @@
         <h1 id="blogName">Adventures with Lumberjake</h1>
         <header id="navBarHeader">
           <nav id="navBar">
-            <a id="homeNavElement">Home</a>
-            <a id="aboutNavElement">About</a>
-            <a href="https://github.com/jakeherold/blog" id="aboutNav">Github Repo</a>
+            <a class="navItem" id="homeNavElement">Home</a>
+            <a class="navItem" id="aboutNavElement">About</a>
+            <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
           </nav>
         </header>
       </section>
@@ -27,21 +27,21 @@
 
 
 
-      <section id="dropDownWrapper">
-        <p>Filter by: </p>
+      <div id="dropDownWrapper">
+        <div id="filterByWrapper"><p>Filter by: </p></div>
 
-        <section class="authorDropDownWrapper">
+        <section class="dropdown" class="authorDropDownWrapper">
             <select name="authorsDropDown" id="authorDropDownAnchor">
               <option value="authorPlaceholder">Author</option>
             </select>
         </section>
 
-        <section class="categoryDropDownWrapper">
+        <section class="dropdown" class="categoryDropDownWrapper">
             <select name="categoryDropDown" id="categoryDropDownAnchor">
               <option value="categoryPlaceholder"> Category</option>
             </select>
         </section>
-      </section>
+      </div>
 
       <section id="articleWrapper">
         <article class="articlePlaceholder">
