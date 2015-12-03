@@ -37,7 +37,10 @@ $(function() {
     $newArticle.append('<hr>');
     $newArticle.find('.articleContent').html(this.body);
     $newArticle.find('.articleContent').children().not('p:first').hide();
-    $newArticle.find('.buttonAnchor').html('<br><button class="expandArticleText"> -> Expand Article </button><br>');
+    //Below is a paragraph designed to operate like a button. This is primarily for sake of aesthetics
+    $newArticle.find('.buttonThatsNotAButton').html('<br><p class="expandArticleText"> read more.... </p>');
+    $newArticle.find('.buttonThatsNotAButton').append('<br><p class="contractArticleText" > read less.... </p>');
+    $newArticle.find('.contractArticleText').hide();
     $newArticle.append('<hr><br>');
 
     return $newArticle;
@@ -54,9 +57,21 @@ $(function() {
   //Button events listener that changes the display attribute relative to where the button was pressed.
   $(".expandArticleText").on('click', function() {
     $(this).parent().prev().children().fadeIn();
+    $(this).hide();
+    console.log('1');
+    $(this).next().next().show();
+    console.log('2');
   });
 
-  //Trying to pull up about page on about click. But, it doesn't wanna go. debug!
+  $(".contractArticleText").on('click', function() {
+    $(this).parent().prev().children().fadeOut();
+    $(this).hide();
+    $(this).prev().prev().fadeIn();
+    console.log('3');
+    $(this).parent().prev().children().not('p:first').hide();
+    console.log('4');
+  });
+
   $("#aboutNavElement").on('click', function() {
     console.log("registered onclick");
     $('#articleWrapper').fadeOut('slow');
@@ -122,10 +137,8 @@ $(function() {
 
   $('#authorDropDownAnchor').on('change', function() {
     var author = $(this).val();
-    console.log(author);
     $('.authorName').each(function() {
       var text = $(this);
-      console.log(text);
       if (text.text() !== author) {
         text.closest('.realArticle').hide();
       } else {
@@ -136,10 +149,8 @@ $(function() {
 
   $('#categoryDropDownAnchor').on('change', function() {
     var category = $(this).val();
-    console.log(category);
     $('.categoryAnchor').each(function() {
       var text = $(this);
-      console.log(text);
       if (text.text() !== category) {
         text.closest('.realArticle').hide();
       } else {
