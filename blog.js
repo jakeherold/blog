@@ -26,9 +26,10 @@ $(function() {
   printArticle.prototype.toHtml = function () {
       var $newArticle = $('.articlePlaceholder').clone();
       $newArticle.removeClass('articlePlaceholder');
+      $newArticle.addClass('realArticle');
       $newArticle.find('h1:first').html(this.title);
       $newArticle.append('<hr>');
-      $newArticle.find('#authorSpot').html('<a href= '+this.authorUrl+'<p>Author: '+this.author + '</p></a>');
+      $newArticle.find('.authorSpot').html('<a href= >'+this.authorUrl+'<p>Author: <span class="authorName">'+this.author + '</span></p></a>');
       $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000) + ' days ago');
       $newArticle.append('<hr>');
       $newArticle.find('.articleContent').html(this.body);
@@ -105,7 +106,7 @@ $(function() {
   function printToDropdown(array, elementId){
     for(i=0; i<array.length; i++){
       $(elementId).append("<option value='"+array[i]+"'>"+array[i]+"</option>");
-      console.log(array[i]);
+      //console.log(array[i]);
     }
   }
 
@@ -113,12 +114,28 @@ $(function() {
   printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
   printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 
-  // //On Author select change, hide all divs not selected
-  // $('select').on('change', function (e) {
-  //   var $selection = $(this).val();
-  //   console.log($selection);
-  //   $('article').hide();
-  //   $(".authorUrl:contains('" + $selection + "')").parents('article').show();
+
+  $('#authorDropDownAnchor').on('change', function(){
+    var author = $(this).val();
+    console.log(author);
+    $('.authorName').each(function(){
+      var text = $(this);
+      console.log(text);
+      if (text.text() !== author){
+        text.closest('.realArticle').hide();
+      }
+      else {
+        text.closest('.realArticle').show();
+      }
+    })
+  });
+
+  //On Author select change, hide all divs not selected
+  // $('.authorDropDownWrapper').on('change', function () {
+  //   var authorPicked = $(this).val();
+  //   $('.realArticle').children().fade();
+  //   //$('articleWrapper').children().not($selection).hide();
+  //   // $(".authorUrl:contains('" + $selection + "')").parents('article').show();
   // });
 
 });
