@@ -9,6 +9,29 @@
     </head>
 
     <body >
+
+      <script id="articleTemplate" type="text/x-handlebars-template">
+
+      <div class="realArticle">
+        <header>
+          <h1>{{{title}}}</h1>
+          <p class="articleCategory">{{category}}</p>
+          <p class="authorSpot" href="{{{authorUrl}}}">{{{author}}}</p>
+           <div class="publishDate">{{{publishedOn}}}</div>
+        </header>
+
+
+        <section class="articleContent">{{{body}}}</section>
+
+        <!-- This part below is, admittedly, difficult to find. Checkout the printArticle Prototype for when we append the paragraph that acts like a button.-->
+        <p class="expandArticleText"> read more.... </p>
+        <p class="contractArticleText" style="display:none;" > read less.... </p>
+      </div>
+
+    </script>
+
+
+
       <section id="navBarWrapper">
         <h1 id="blogName">Adventures with Lumberjake</h1>
         <header id="navBarHeader">
@@ -22,7 +45,7 @@
 
       <div id="aboutDiv">
         <h1>About the Developer</h1>
-        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even that bitter swill is an ok thing for humans to make? </p>
+        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you make bitter swill thats clearly designed to poison your fellow man? </p>
       </div>
 
 
@@ -43,27 +66,7 @@
         </section>
       </div>
 
-      <section id="articleWrapper">
-        <article class="articlePlaceholder">
-          <header>
-            <section class="categoryAnchor" style="display:none"></section>
-
-            <h1></h1>
-              <p class="authorSpot"></p>
-                <div class="publishDate">
-                  <time pubdate datetime="2000-01-01">
-                  </time>
-                </div>
-          </header>
-
-          <section class="articleContent"></section>
-
-          <!-- This part below is, admittedly, difficult to find. Checkout the printArticle Prototype for when we append the paragraph that acts like a button.-->
-          <section class="buttonThatsNotAButton"></section>
-
-
-        </article>
-      </section>
+      <section id="articleWrapper"></section>
 
     </body>
 

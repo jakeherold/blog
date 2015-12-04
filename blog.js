@@ -15,61 +15,41 @@ $(function() {
   }
   sortDate(blog.rawData);
 
-  function printArticle(obj) {
-    this.title = obj.title;
-    this.author = obj.author;
-    this.authorUrl = obj.authorUrl;
-    this.publishedOn = obj.publishedOn;
-    this.body = obj.body;
-    this.category = obj.category;
+
+
+
+  var boilerplateContent = $('#articleTemplate').html();
+
+  var theTemplate = Handlebars.compile(boilerplateContent);
+
+//prints all articles to DOM
+  for (mm = 0; mm < blog.rawData.length; mm++){
+    var compiledArticle = theTemplate(blog.rawData[mm]);
+    $('#articleWrapper').append(compiledArticle);
   }
 
-  //Grabs placeholder, clones it, and adds all the relevent elements
-  printArticle.prototype.toHtml = function() {
-    var $newArticle = $('.articlePlaceholder').clone();
-    $newArticle.removeClass('articlePlaceholder');
-    $newArticle.addClass('realArticle');
-    $newArticle.find('.categoryAnchor').html(this.category);
-    $newArticle.find('h1:first').html(this.title);
-    $newArticle.append('<hr>');
-    $newArticle.find('.authorSpot').html('<a href= ' + this.authorUrl + '><p>Author: <span class="authorName">' + this.author + '</span></p></a>');
-    $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
-    $newArticle.append('<hr>');
-    $newArticle.find('.articleContent').html(this.body);
-    $newArticle.find('.articleContent').children().not('p:first').hide();
-    //Below is a paragraph designed to operate like a button. This is primarily for sake of aesthetics
-    $newArticle.find('.buttonThatsNotAButton').html('<br><p class="expandArticleText"> read more.... </p>');
-    $newArticle.find('.buttonThatsNotAButton').append('<br><p class="contractArticleText" > read less.... </p>');
-    $newArticle.find('.contractArticleText').hide();
-    $newArticle.append('<hr><br>');
+//Hides non-first paragraphs on load
+  $('.articleContent').each(function(){
+    $(this).children().not('p:first').hide();
+  });
 
-    return $newArticle;
-  }
-
-  //holds the
-  var dataArray = {};
-
-  for (ii = 0; ii < blog.rawData.length; ii++) {
-    dataArray = new printArticle(blog.rawData[ii]);
-    $('#articleWrapper').append(dataArray.toHtml());
-  }
-
-  //Button events listener that changes the display attribute relative to where the button was pressed.
+//Button events listener that changes the display attribute relative to where the button was pressed.
   $(".expandArticleText").on('click', function() {
-    $(this).parent().prev().children().fadeIn();
+    $(this).prev().children().fadeIn();
     $(this).hide();
     console.log('1');
-    $(this).next().next().show();
+    $(this).next().show();
     console.log('2');
   });
 
   $(".contractArticleText").on('click', function() {
-    $(this).parent().prev().children().fadeOut();
+    $(this).prev().prev().children().not('p:first').fadeOut();
     $(this).hide();
-    $(this).prev().prev().fadeIn();
+    $(this).prev().fadeIn();
     console.log('3');
     $(this).parent().prev().children().not('p:first').hide();
     console.log('4');
+    $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
   });
 
   $("#aboutNavElement").on('click', function() {
@@ -137,7 +117,7 @@ $(function() {
 
   $('#authorDropDownAnchor').on('change', function() {
     var author = $(this).val();
-    $('.authorName').each(function() {
+    $('.authorSpot').each(function() {
       var text = $(this);
       if (text.text() !== author) {
         text.closest('.realArticle').hide();
@@ -149,7 +129,7 @@ $(function() {
 
   $('#categoryDropDownAnchor').on('change', function() {
     var category = $(this).val();
-    $('.categoryAnchor').each(function() {
+    $('.articleCategory').each(function() {
       var text = $(this);
       if (text.text() !== category) {
         text.closest('.realArticle').hide();
