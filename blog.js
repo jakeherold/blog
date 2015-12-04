@@ -15,44 +15,34 @@ $(function() {
   }
   sortDate(blog.rawData);
 
-  function printArticle(obj) {
-    this.title = obj.title;
-    this.author = obj.author;
-    this.authorUrl = obj.authorUrl;
-    this.publishedOn = obj.publishedOn;
-    this.body = obj.body;
-    this.category = obj.category;
-  }
 
-  //Grabs placeholder, clones it, and adds all the relevent elements
-  printArticle.prototype.toHtml = function() {
-    var $newArticle = $('.articlePlaceholder').clone();
-    $newArticle.removeClass('articlePlaceholder');
-    $newArticle.addClass('realArticle');
-    $newArticle.find('.categoryAnchor').html(this.category);
-    $newArticle.find('h1:first').html(this.title);
-    $newArticle.append('<hr>');
-    $newArticle.find('.authorSpot').html('<a href= ' + this.authorUrl + '><p>Author: <span class="authorName">' + this.author + '</span></p></a>');
-    $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
-    $newArticle.append('<hr>');
-    $newArticle.find('.articleContent').html(this.body);
-    $newArticle.find('.articleContent').children().not('p:first').hide();
-    //Below is a paragraph designed to operate like a button. This is primarily for sake of aesthetics
-    $newArticle.find('.buttonThatsNotAButton').html('<br><p class="expandArticleText"> read more.... </p>');
-    $newArticle.find('.buttonThatsNotAButton').append('<br><p class="contractArticleText" > read less.... </p>');
-    $newArticle.find('.contractArticleText').hide();
-    $newArticle.append('<hr><br>');
 
-    return $newArticle;
-  }
+
+  var boilerplateContent = $('#articleTemplate').html();
+
+  console.log("boilerplateContent = " + boilerplateContent);
+
+  var theTemplate = Handlebars.compile(boilerplateContent);
+
+  console.log("theTemplate = " +theTemplate);
+
+
+ for (mm = 0; mm < blog.rawData.length; mm++){
+  var compiledArticle = theTemplate(blog.rawData[mm]);
+  console.log(compiledArticle);
+  $('#articleWrapper').append(compiledArticle);
+}
+
+  //   $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
+
 
   //holds the
-  var dataArray = {};
-
-  for (ii = 0; ii < blog.rawData.length; ii++) {
-    dataArray = new printArticle(blog.rawData[ii]);
-    $('#articleWrapper').append(dataArray.toHtml());
-  }
+  // var dataArray = {};
+  //
+  // for (ii = 0; ii < blog.rawData.length; ii++) {
+  //   dataArray = new printArticle(blog.rawData[ii]);
+  //   $('#articleWrapper').append(dataArray.toHtml());
+  // }
 
   //Button events listener that changes the display attribute relative to where the button was pressed.
   $(".expandArticleText").on('click', function() {
