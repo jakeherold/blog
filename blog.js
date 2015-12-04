@@ -20,46 +20,36 @@ $(function() {
 
   var boilerplateContent = $('#articleTemplate').html();
 
-  console.log("boilerplateContent = " + boilerplateContent);
-
   var theTemplate = Handlebars.compile(boilerplateContent);
 
-  console.log("theTemplate = " +theTemplate);
+//prints all articles to DOM
+  for (mm = 0; mm < blog.rawData.length; mm++){
+    var compiledArticle = theTemplate(blog.rawData[mm]);
+    $('#articleWrapper').append(compiledArticle);
+  }
 
+//Hides non-first paragraphs on load
+  $('.articleContent').each(function(){
+    $(this).children().not('p:first').hide();
+  });
 
- for (mm = 0; mm < blog.rawData.length; mm++){
-  var compiledArticle = theTemplate(blog.rawData[mm]);
-  console.log(compiledArticle);
-  $('#articleWrapper').append(compiledArticle);
-}
-
-  //   $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
-
-
-  //holds the
-  // var dataArray = {};
-  //
-  // for (ii = 0; ii < blog.rawData.length; ii++) {
-  //   dataArray = new printArticle(blog.rawData[ii]);
-  //   $('#articleWrapper').append(dataArray.toHtml());
-  // }
-
-  //Button events listener that changes the display attribute relative to where the button was pressed.
+//Button events listener that changes the display attribute relative to where the button was pressed.
   $(".expandArticleText").on('click', function() {
-    $(this).parent().prev().children().fadeIn();
+    $(this).prev().children().fadeIn();
     $(this).hide();
     console.log('1');
-    $(this).next().next().show();
+    $(this).next().show();
     console.log('2');
   });
 
   $(".contractArticleText").on('click', function() {
-    $(this).parent().prev().children().fadeOut();
+    $(this).prev().prev().children().not('p:first').fadeOut();
     $(this).hide();
-    $(this).prev().prev().fadeIn();
+    $(this).prev().fadeIn();
     console.log('3');
     $(this).parent().prev().children().not('p:first').hide();
     console.log('4');
+    $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
   });
 
   $("#aboutNavElement").on('click', function() {

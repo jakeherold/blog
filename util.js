@@ -15,3 +15,8 @@ util.getUnique = function(array) {
   console.log(a);
   return a;
 };
+
+
+
+//saving time conversion snippit
+  //   $newArticle.find('time').html('Published ' + parseInt((new Date() - new Date(this.publishedOn)) / 60 / 60 / 24 / 1000) + ' days ago');
