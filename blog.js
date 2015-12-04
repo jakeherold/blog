@@ -127,15 +127,30 @@ $(function() {
     })
   });
 
-  $('#categoryDropDownAnchor').on('change', function() {
+  $('#categoryDropDownAnchor').on('change',
+
+  function() {
     var category = $(this).val();
+
     $('.articleCategory').each(function() {
       var text = $(this);
-      if (text.text() !== category) {
+      //shows all articles if Category placeholder is selected
+      if (text === "Category"){
+        console.log("cry havoc and let loose the articles regardless of category!");
+        $('.articleContent').each(function(){
+          $(this).children().not('p:first').hide();
+        });
+
+      }
+
+
+      //if thing selected equals article category, show all
+      else if(text.text() !== category) {
         text.closest('.realArticle').hide();
       } else {
         text.closest('.realArticle').show();
       }
-    })
+    });
   });
-});
+
+}); //this one has to be here for IIFE
