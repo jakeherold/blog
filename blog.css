@@ -13,6 +13,12 @@ body{
   text-align: center;
   font-size: 2em;
   padding: 1.3em;
+  background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
+  border-bottom: black 4px;
+}
+#filterByWrapper{
+  text-align: center;
+  margin-top:1em;
 }
 #gitNav{
   color: black;
@@ -88,6 +94,8 @@ color: green;
   }
   #filterByWrapper{
     text-align: center;
+    margin-top:1em;
+
   }
   .navItem{
     display: block;

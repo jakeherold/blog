@@ -117,7 +117,7 @@ $(function() {
 
   $('#authorDropDownAnchor').on('change', function() {
     var author = $(this).val();
-    $('.authorName').each(function() {
+    $('.authorSpot').each(function() {
       var text = $(this);
       if (text.text() !== author) {
         text.closest('.realArticle').hide();
@@ -129,7 +129,7 @@ $(function() {
 
   $('#categoryDropDownAnchor').on('change', function() {
     var category = $(this).val();
-    $('.categoryAnchor').each(function() {
+    $('.articleCategory').each(function() {
       var text = $(this);
       if (text.text() !== category) {
         text.closest('.realArticle').hide();
