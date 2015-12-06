@@ -1,39 +1,60 @@
 $(function() {
+
+  //Declare variables for matching jQuery objects
   var titleInput = $('#userInputTitle');
-  console.log(titleInput);
+  var categoryInput = $('#userInputCategory');
+  var authorInput = $('#userInputAuthor');
+  var authorUrlInput = $('#userInputUrl');
+  var publishedOnInput = $('#userInputPublishedOn');
   var bodyInput = $('#userInputBody');
   var pRawHtmlOutput = $('#pRawHtmlOutput');
   var pMarkdownOutput = $('#pMarkdownOutput');
   var pJson    = $('#pJson');
-  var mObj = {}; // Empty object, filled in to during JSON string update
-  var blogAllInputs = {}; //create object to store values
+
+  // Empty object, filled into during JSON string update
+  var newArticleObj = {};
 
   function render() {
 
-
-
-    var titleVal = titleInput.val(); // Raw article markup
-    console.log(titleVal);
+    // Collected User Input values
+    var titleVal = titleInput.val();
+    var categoryVal = categoryInput.val();
+    var authorVal = authorInput.val();
+    var authorUrlVal = authorUrlInput.val();
+    var publishedOnVal = publishedOnInput.val();
     var bodyVal = bodyInput.val();
 
-    var t = marked(titleVal); // Convert markup to html
-    console.log(t);
+    // Convert markup to html (for body), shorten variable for others
+    var t = titleVal;
+    var c = categoryVal;
+    var a = authorVal;
+    var u = authorUrlVal;
+    var p = publishedOnVal;
     var b = marked(bodyVal);
 
-    pRawHtmlOutput.text(t); // Render raw markup
-    console.log(pRawHtmlOutput.text(t));
-    pRawHtmlOutput.text(b);
+    //Combine all inputs for markdown output
+    var allInputs = t + c + a + u + p + b;
 
-    pMarkdownOutput.html(t); // Render article preview (rendered as HTML)
+    //Output all inputs to live markdown
+    pMarkdownOutput.html(allInputs); // Render article preview (rendered as HTML)
+
+    pRawHtmlOutput.text(allInputs); // Render raw html
+
+
 
     // Update JSON article
-    mObj.articleBody = b;
-    mObj.title = t;
-    var jsonStr = pJson.text(JSON.stringify(mObj));
+    newArticleObj.articleBody = b;
+    newArticleObj.title = t;
+    var jsonStr = pJson.text(JSON.stringify(newArticleObj));
   }
 
   // Any character change (article editing) updates the live output paragraphs
   titleInput.on('input', render);
+  categoryInput.on('input', render);
+  authorInput.on('input', render);
+  authorUrlInput.on('input', render);
+  publishedOnInput.on('input', render);
+  bodyInput.on('input', render);
 
   render(); // Render once on doc load
 });
