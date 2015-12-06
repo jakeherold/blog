@@ -80,6 +80,13 @@ select{
   margin-bottom: 7.5px;
 }
 
+.textInOutDiv {
+  display: inline-block;
+  vertical-align: top;
+  width: 47%;
+  padding: 2px;
+}
+
 
 /***************
 * Mobile Rules *
