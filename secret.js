@@ -38,23 +38,27 @@ $(function() {
     //Output all inputs to live markdown
     pMarkdownOutput.html(allInputs); // Render article preview (rendered as HTML)
 
-    pRawHtmlOutput.text(allInputs); // Render raw html
+    // pRawHtmlOutput.text(allInputs); // Render raw html
 
 
 
-    // Update JSON article
-    newArticleObj.articleBody = b;
+    // Update newArticleObj with each input
     newArticleObj.title = t;
+    newArticleObj.category = c;
+    newArticleObj.author = a;
+    newArticleObj.authorUrl = u;
+    newArticleObj.publishedOn = p;
+    newArticleObj.body = b;
     var jsonStr = pJson.text(JSON.stringify(newArticleObj));
   }
 
-  // Any character change (article editing) updates the live output paragraphs
-  titleInput.on('input', render);
-  categoryInput.on('input', render);
-  authorInput.on('input', render);
-  authorUrlInput.on('input', render);
-  publishedOnInput.on('input', render);
-  bodyInput.on('input', render);
+    // Any character change (article editing) updates the live output paragraphs
+    titleInput.on('input', render);
+    categoryInput.on('input', render);
+    authorInput.on('input', render);
+    authorUrlInput.on('input', render);
+    publishedOnInput.on('input', render);
+    bodyInput.on('input', render);
 
-  render(); // Render once on doc load
+    render(); // Render once on doc load
 });
