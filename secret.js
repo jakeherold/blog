@@ -66,6 +66,21 @@ $(function() {
 
   }
 
+  //Button events listener that changes the display attribute relative to where the button was pressed.
+    $(".expandArticleText").on('click', function() {
+      $(this).prev().children().fadeIn();
+      $(this).hide();
+      $(this).next().show();
+    });
+
+    $(".contractArticleText").on('click', function() {
+      $(this).prev().prev().children().not('p:first').fadeOut();
+      $(this).hide();
+      $(this).prev().fadeIn();
+      $(this).parent().prev().children().not('p:first').hide();
+      $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
+    });
+
   // Any character change (article editing) updates the live output paragraphs
   textTitle.on('input', render);
   textBody.on('input', render);
@@ -74,4 +89,5 @@ $(function() {
   textCategory.on('input', render);
 
   render(); // Render once on doc load
+
 });
