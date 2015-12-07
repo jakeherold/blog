@@ -46,9 +46,11 @@ $(function() {
     newArticleObj.authorUrl = u;
     newArticleObj.publishedOn = p;
     newArticleObj.body = b;
+    console.log(newArticleObj);
 
     //Stringify newArticleObj and output to JSON div
-    pJson.text(JSON.stringify(newArticleObj));
+    // pJson.text(JSON.stringify(newArticleObj));
+    pJson.val(newArticleObj);
 
     //Run object through handlebars and then output to Live HTML div
     var boilerplateContent = $('#articleTemplate').html();

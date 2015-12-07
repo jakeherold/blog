@@ -118,6 +118,21 @@ select{
 
   }
 
+  .secretPageBody {
+    margin: 20px;
+    text-align: left;
+  }
+
+  .userInputContainer {
+    margin-top: 15px;
+    margin-right: 0;
+    max-width: 400px;
+  }
+  .outputDivContainer{
+    margin-top: 15px;
+  }
+
+
 }
 
 
