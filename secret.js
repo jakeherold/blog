@@ -3,8 +3,9 @@ $(function() {
   var textAuthor = $('#textAuthor');
   var textUrl = $('#textUrl');
   var textCategory = $('#textCategory');
+  var textDate = $('#textDate');
   var textBody    = $('#textBody');
-  var articleTemplate = $('#articleTemplate').html();
+  //var articleTemplate = $('#articleTemplate').html();
   var liveRawHtmlOutput = $('#liveRawHtmlOutput');
   var pMarkOut = $('#pMarkOut');
   var pJson    = $('#pJson');
@@ -25,13 +26,15 @@ $(function() {
     var authorVal = textAuthor.val(); //raw author markup
     var urlVal = textUrl.val(); //raw URL markup
     var categoryVal = textCategory.val();//raw category markup
+    var dateVal = textDate.val();
     var bodVal = textBody.val(); // Raw body markup
-    console.log(bodVal);
+
 
     var t = titleVal; //convert title markup to html
     var b = marked(bodVal); // Convert body markup to html
     var a = authorVal; //convert author markup to html
     var u = urlVal; // Convert URL markup to html
+    var d = dateVal;
     var c = categoryVal; //convert category markup to html
     var allTheBlock = t + a + u + c + b;
 
@@ -43,26 +46,21 @@ $(function() {
     // Update JSON article
     mObj.title = t;
     mObj.body = b;
-    mObj.category = "pets";
-    mObj.publishedOn = "2015-12-31";
+    mObj.category = c;
+    mObj.publishedOn = d;
     mObj.author = a;
     mObj.authorURL = u;
     mObj.category = c;
 
     var secretData = {};
-    count++;
-    console.log(count);
 
-    console.log(mObj);
     var jsonStr = pJson.text(JSON.stringify(mObj));
     var articleTemplate = $('#articleTemplate').html();
 
     var secretData = mObj;
     var renderer = Handlebars.compile(articleTemplate);
-    console.log();
 
     var compiledHtml = renderer(mObj);
-    console.log(compiledHtml);
     $('#pMarkOut').html(compiledHtml);
 
 
@@ -75,6 +73,5 @@ $(function() {
   textUrl.on('input', render);
   textCategory.on('input', render);
 
-  var count = 0;
   render(); // Render once on doc load
 });
