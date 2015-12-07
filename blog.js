@@ -15,15 +15,14 @@ $(function() {
   }
   sortDate(blog.rawData);
 
-$.get( 'blog/template.html' , function (z) {
-console.log(z);
-var theTemplate = Handlebars.compile(z);
-console.log(theTemplate);
-for (mm = 0; mm < blog.rawData.length; mm++){
-  var compiledArticle = theTemplate(blog.rawData[mm]);
-  $('#articleWrapper').append(compiledArticle);
-}
-
+$.get( 'template.html' , function (z) {
+  console.log(z);
+    var theTemplate = Handlebars.compile(z);
+  console.log(theTemplate);
+    for (mm = 0; mm < blog.rawData.length; mm++){
+      var compiledArticle = theTemplate(blog.rawData[mm]);
+      $('#articleWrapper').append(compiledArticle);
+  }
 
 });
 
