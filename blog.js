@@ -15,18 +15,28 @@ $(function() {
   }
   sortDate(blog.rawData);
 
+$.get( 'blog/template.html' , function (z) {
+console.log(z);
+var theTemplate = Handlebars.compile(z);
+console.log(theTemplate);
+for (mm = 0; mm < blog.rawData.length; mm++){
+  var compiledArticle = theTemplate(blog.rawData[mm]);
+  $('#articleWrapper').append(compiledArticle);
+}
 
 
+});
 
-  var boilerplateContent = $('#articleTemplate').html();
 
-  var theTemplate = Handlebars.compile(boilerplateContent);
+  // var boilerplateContent = $('#articleTemplate').html();
+
+  // var theTemplate = Handlebars.compile(boilerplateContent);
 
 //prints all articles to DOM
-  for (mm = 0; mm < blog.rawData.length; mm++){
-    var compiledArticle = theTemplate(blog.rawData[mm]);
-    $('#articleWrapper').append(compiledArticle);
-  }
+  // for (mm = 0; mm < blog.rawData.length; mm++){
+  //   var compiledArticle = theTemplate(blog.rawData[mm]);
+  //   $('#articleWrapper').append(compiledArticle);
+  // }
 
 //Hides non-first paragraphs on load
   $('.articleContent').each(function(){
@@ -37,18 +47,14 @@ $(function() {
   $(".expandArticleText").on('click', function() {
     $(this).prev().children().fadeIn();
     $(this).hide();
-    console.log('1');
     $(this).next().show();
-    console.log('2');
   });
 
   $(".contractArticleText").on('click', function() {
     $(this).prev().prev().children().not('p:first').fadeOut();
     $(this).hide();
     $(this).prev().fadeIn();
-    console.log('3');
     $(this).parent().prev().children().not('p:first').hide();
-    console.log('4');
     $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
   });
 
