@@ -37,28 +37,36 @@ $(function() {
 
     //Output all inputs to live markdown
     pMarkdownOutput.html(allInputs); // Render article preview (rendered as HTML)
-
     // pRawHtmlOutput.text(allInputs); // Render raw html
 
-
-
-    // Update newArticleObj with each input
+    // Update previously empty newArticleObj with each input
     newArticleObj.title = t;
     newArticleObj.category = c;
     newArticleObj.author = a;
     newArticleObj.authorUrl = u;
     newArticleObj.publishedOn = p;
     newArticleObj.body = b;
-    var jsonStr = pJson.text(JSON.stringify(newArticleObj));
+
+    //Stringify newArticleObj and output to JSON div
+    pJson.text(JSON.stringify(newArticleObj));
+
+    //Run object through handlebars and then output to Live HTML div
+    var boilerplateContent = $('#articleTemplate').html();
+    var theTemplate = Handlebars.compile(boilerplateContent);
+    var compiledArticle = theTemplate(newArticleObj);
+
+    pRawHtmlOutput.html(compiledArticle);
+
+
   }
 
-    // Any character change (article editing) updates the live output paragraphs
-    titleInput.on('input', render);
-    categoryInput.on('input', render);
-    authorInput.on('input', render);
-    authorUrlInput.on('input', render);
-    publishedOnInput.on('input', render);
-    bodyInput.on('input', render);
+  // Any character change (article editing) updates the live output paragraphs
+  titleInput.on('input', render);
+  categoryInput.on('input', render);
+  authorInput.on('input', render);
+  authorUrlInput.on('input', render);
+  publishedOnInput.on('input', render);
+  bodyInput.on('input', render);
 
-    render(); // Render once on doc load
+  render(); // Render once on doc load
 });
