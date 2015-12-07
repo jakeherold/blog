@@ -1,4 +1,5 @@
 blog.rawData = [
+  {"title":"Why My Article is Rad\n","body":"<p>Sample text that is a brilliant article.</p>\n","category":"Code\n","publishedOn":"2015-12-03\n","author":"J. Herold\n","authorURL":"jakeherold.github.io/gitSquared\n"},
   {
     title:       'Bacon Ipsum',
     category:    'food',
