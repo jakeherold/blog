@@ -19,28 +19,10 @@ $(function() {
       }
     );
   }
-  // sortDate(blog.rawData);
+
 
 //SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
-var serverEtag;
-
-//SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
-var localEtag;
-
-
-//TAKES Local  ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
-var setEtagFromServer = function (){
-  localStorage.setItem('localEtag', serverEtag);
-
-}
-
-//
-var getEtagFromBrowser = function (){
-  eTagTemp = localStorage.getItem('localEtag', localEtag);
-  localEtag = eTagTemp;
-  return localEtag;
-
-}
+var serverETag;
 
 //PULLS eTag FROM SERVER (FILLS INTO serverETag)
 var getEtagFromServer = function (){
@@ -55,6 +37,29 @@ var getEtagFromServer = function (){
      }
    });
 }
+getEtagFromServer();
+//SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
+var localEtag = localStorage.getItem('localEtag');
+
+
+//TAKES SERVERSIDE ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
+var setEtagFromServer = function (){
+  console.log("trying to set etag from server to local storage");
+  localStorage.setItem('localEtag', serverETag);
+  console.log("done with setting etag from server to local storage");
+}
+
+//
+var getEtagFromBrowser = function (){
+  console.log("trying to get etag from localstorage to local storage");
+
+  eTagTemp = localStorage.getItem('localEtag', localEtag);
+  localEtag = eTagTemp;
+  return localEtag;
+
+}
+
+
 //PULLS OBJECT FROM SERVER (FILLS INTO SERVERCONTENT)
 var getArticleDataObjectFromServer = function (){
   return $.ajax({
@@ -66,11 +71,11 @@ var getArticleDataObjectFromServer = function (){
 
 getArticleDataObjectFromServer().done(function(data, textStatus, xhr){
   console.log("got stuff from server good");
-  localEtagPlaceholder = getEtagFromBrowser();
+  // localEtagPlaceholder = getEtagFromBrowser();
   //CHECKS TO SEE IF THERE IS A LOCAL eTAG
-    if (localEtagPlaceholder){
+    if (localEtag){
         getEtagFromServer();
-        if (localEtagPlaceholder !== serverEtag){  //local  etag ==== server etag
+        if (localEtag !== serverETag){  //local  etag ==== server etag
           console.log("cache needs update. Updating");
           updateLocalArticles();
                             //pull from local cache
@@ -98,7 +103,11 @@ var convertMarkdown = function(arrayOfObj){
 
 
 var updateLocalArticles = function(){
-  localStorage.setItem('localEtag', localEtag);
+  getEtagFromServer();
+  // newLocalEtag = serverETag;
+  setEtagFromServer();
+  // localStorage.setItem('localEtag', serverETag);
+  console.log(serverETag);
   $.getJSON('blogArticles.json',function (localArticleData){
     console.log('Updating local articles');
     localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
@@ -133,7 +142,8 @@ var printFromLocal = function(){
 
     }
     console.log("The computer gods are caprecious and perfectly just. You have in your Page what you made to be there. We all must reap what we sow. ");
-    console.log(localEtag);
+    // superTemoporaryLocalShorthand = getEtagFromBrowser();
+    // console.log(superTemoporaryLocalShorthand);
   });
   var populatedAuthorArray = populateAuthor();
   // var populatedAuthorArray = getUnique(populatedAuthorArray);
