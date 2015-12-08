@@ -108,26 +108,32 @@ var updateLocalArticles = function(){
 //PRINTS ARTICLES. Takes local data, updated by updateLocal
 var printFromLocal = function(){
   localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
+  console.log(localArticleData);
   sortDate(localArticleData);
+  console.log(localArticleData);
   localArticleData = convertMarkdown(localArticleData);
+  console.log(localArticleData);
+
 
   $.get( 'template.html' , function (z) {
     console.log(z);
     var theTemplate = Handlebars.compile(z);
     console.log(theTemplate);
-
+    console.log(localArticleData);
       for (mm = 0; mm < localArticleData; mm++){
         var compiledArticle = theTemplate(localArticleData[mm]);
+        console.log("make an article!");
         $('#articleWrapper').append(compiledArticle);
+        console.log("print an article!");
     }
-    console.log("lets hope to the lord that it printed, else may God have mercy on my soul")
+    console.log("lets hope to the lord that it printed, else may God have mercy on my soul");
   });
-  var populatedAuthorArray = populateAuthor();
-  var populatedAuthorArray = getUnique(populatedAuthorArray);
-  var populatedCategoryArray = populateCategory();
-  var populatedCategoryArray = getUnique(populatedCategoryArray);
-  printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-  printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+  // var populatedAuthorArray = populateAuthor();
+  // var populatedAuthorArray = getUnique(populatedAuthorArray);
+  // var populatedCategoryArray = populateCategory();
+  // var populatedCategoryArray = getUnique(populatedCategoryArray);
+  // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
+  // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 }
 
 // var serverContent =
@@ -216,42 +222,42 @@ var printFromLocal = function(){
   // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
   // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 
-  $('#authorDropDownAnchor').on('change', function() {
-    var author = $(this).val();
-    $('.authorSpot').each(function() {
-      var text = $(this);
-      if (text.text() !== author) {
-        text.closest('.realArticle').hide();
-      } else {
-        text.closest('.realArticle').show();
-      }
-    })
-  });
+  // $('#authorDropDownAnchor').on('change', function() {
+  //   var author = $(this).val();
+  //   $('.authorSpot').each(function() {
+  //     var text = $(this);
+  //     if (text.text() !== author) {
+  //       text.closest('.realArticle').hide();
+  //     } else {
+  //       text.closest('.realArticle').show();
+  //     }
+  //   })
+  // });
 
-  $('#categoryDropDownAnchor').on('change',
-
-  function() {
-    var category = $(this).val();
-
-    $('.articleCategory').each(function() {
-      var text = $(this);
-      //shows all articles if Category placeholder is selected
-      if (text === "Category"){
-        console.log("cry havoc and let loose the articles regardless of category!");
-        $('.articleContent').each(function(){
-          $(this).children().not('p:first').hide();
-        });
-
-      }
-
-
-      //if thing selected equals article category, show all
-      else if(text.text() !== category) {
-        text.closest('.realArticle').hide();
-      } else {
-        text.closest('.realArticle').show();
-      }
-    });
-  });
+  // $('#categoryDropDownAnchor').on('change',
+  //
+  // function() {
+  //   var category = $(this).val();
+  //
+  //   $('.articleCategory').each(function() {
+  //     var text = $(this);
+  //     //shows all articles if Category placeholder is selected
+  //     if (text === "Category"){
+  //       console.log("cry havoc and let loose the articles regardless of category!");
+  //       $('.articleContent').each(function(){
+  //         $(this).children().not('p:first').hide();
+  //       });
+  //
+  //     }
+  //
+  //
+  //     //if thing selected equals article category, show all
+  //     else if(text.text() !== category) {
+  //       text.closest('.realArticle').hide();
+  //     } else {
+  //       text.closest('.realArticle').show();
+  //     }
+  //   });
+  // });
 
 }); //this one has to be here for IIFE
