@@ -22,12 +22,25 @@ $(function() {
   // sortDate(blog.rawData);
 
 //SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
-  var serverEtag;
+var serverEtag;
 
 //SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
-  var localEtag = localStorage.getItem(localEtag);
+var localEtag;
 
 
+//TAKES Local  ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
+var setEtagFromServer = function (){
+  localStorage.setItem('localEtag', serverEtag);
+
+}
+
+//
+var getEtagFromBrowser = function (){
+  eTagTemp = localStorage.getItem('localEtag', localEtag);
+  localEtag = eTagTemp;
+  return localEtag;
+
+}
 
 //PULLS eTag FROM SERVER (FILLS INTO serverETag)
 var getEtagFromServer = function (){
@@ -36,8 +49,8 @@ var getEtagFromServer = function (){
    url: 'blogArticles.json',
    // dataType: "json",
    success: function( data, status, xhr){
-       console.log(xhr.getResponseHeader ('eTag'));
        var eTag = xhr.getResponseHeader('eTag');
+       console.log(eTag);
        serverETag = eTag;
      }
    });
@@ -47,7 +60,6 @@ var getArticleDataObjectFromServer = function (){
   return $.ajax({
     type: 'GET',
     url: 'blogArticles.json',
-
   });
 };
 
@@ -73,16 +85,6 @@ getArticleDataObjectFromServer().done(function(data, textStatus, xhr){
 
 });
 
-//TAKES JS ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
-var setEtagFromServer = function (){
-  localStorage.setItem('localEtag', serverEtag);
-
-}
-
-//
-var getEtagFromBrowser = function (){
-  localStorage.getItem('localEtag', localEtag)
-}
 
 //shamelessly accepted help from J. Hurr. Mad props for the assist, yo. :P
 var convertMarkdown = function(arrayOfObj){
@@ -122,45 +124,46 @@ var printFromLocal = function(){
     console.log(z);
     var theTemplate = Handlebars.compile(z);
     console.log(theTemplate);
-    console.log(localArticleData);
+    // console.log(localArticleData);
       for (mm = 0; mm < localArticleData.length; mm++){
         var compiledArticle = theTemplate(localArticleData[mm]);
-        console.log("make an article!");
+        // console.log("make an article!");
         $('#articleWrapper').append(compiledArticle);
-        console.log("print an article!");
+        // console.log("print an article!");
 
     }
     console.log("The computer gods are caprecious and perfectly just. You have in your Page what you made to be there. We all must reap what we sow. ");
+    console.log(localEtag);
   });
   var populatedAuthorArray = populateAuthor();
-  var populatedAuthorArray = getUnique(populatedAuthorArray);
-  // var populatedCategoryArray = populateCategory();
+  // var populatedAuthorArray = getUnique(populatedAuthorArray);
+  var populatedCategoryArray = populateCategory();
   // var populatedCategoryArray = getUnique(populatedCategoryArray);
   // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
   // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 }
 
 // var serverContent =
- localContent = localStorage.getItem('localArticleData');
+  var localContent = localStorage.getItem('localArticleData');
 //Hides non-first paragraphs on load
-  $('.articleContent').each(function(){
-    $(this).children().not('p:first').hide();
-  });
-
-//Button events listener that changes the display attribute relative to where the button was pressed.
-  $(".expandArticleText").on('click', function() {
-    $(this).prev().children().fadeIn();
-    $(this).hide();
-    $(this).next().show();
-  });
-
-  $(".contractArticleText").on('click', function() {
-    $(this).prev().prev().children().not('p:first').fadeOut();
-    $(this).hide();
-    $(this).prev().fadeIn();
-    $(this).parent().prev().children().not('p:first').hide();
-    $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
-  });
+//   $('.articleContent').each(function(){
+//     $(this).children().not('p:first').hide();
+//   });
+//
+// //Button events listener that changes the display attribute relative to where the button was pressed.
+//   $(".expandArticleText").on('click', function() {
+//     $(this).prev().children().fadeIn();
+//     $(this).hide();
+//     $(this).next().show();
+//   });
+//
+//   $(".contractArticleText").on('click', function() {
+//     $(this).prev().prev().children().not('p:first').fadeOut();
+//     $(this).hide();
+//     $(this).prev().fadeIn();
+//     $(this).parent().prev().children().not('p:first').hide();
+//     $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
+//   });
 
   $("#aboutNavElement").on('click', function() {
     console.log("registered onclick");
