@@ -15,27 +15,40 @@ $(function() {
   }
   sortDate(blog.rawData);
 
+
+var eTagToStore;
+ $.ajax({
+  type: 'HEAD',
+  url: 'blogArticles.json',
+  // dataType: "json",
+  success: function( data, status, xhr){
+      console.log(xhr.getResponseHeader ('eTag'));
+      var eTag = xhr.getResponseHeader('eTag');
+      eTagToStore = eTag;
+  }
+  // fail: funtion (request, textStatus, errorThrown){
+  //     alert(request.getResponseHeader('remoteData'));
+  // }
+});
+
+
+
+
+
 $.get( 'template.html' , function (z) {
   console.log(z);
+
     var theTemplate = Handlebars.compile(z);
+
   console.log(theTemplate);
+
     for (mm = 0; mm < blog.rawData.length; mm++){
       var compiledArticle = theTemplate(blog.rawData[mm]);
       $('#articleWrapper').append(compiledArticle);
   }
-
 });
 
 
-  // var boilerplateContent = $('#articleTemplate').html();
-
-  // var theTemplate = Handlebars.compile(boilerplateContent);
-
-//prints all articles to DOM
-  // for (mm = 0; mm < blog.rawData.length; mm++){
-  //   var compiledArticle = theTemplate(blog.rawData[mm]);
-  //   $('#articleWrapper').append(compiledArticle);
-  // }
 
 //Hides non-first paragraphs on load
   $('.articleContent').each(function(){
