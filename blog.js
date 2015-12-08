@@ -1,11 +1,7 @@
 //Each locally stored object is ("localEtag":"numbers and crap", localArticleData: "bunch of article stuff")
 $(function() {
 
-
-
-
-
-//SORT DATE FUNCTION TO OPEN
+  //SORT DATE FUNCTION TO OPEN
   function sortDate(A) {
     A.sort(
       function(a, b) {
@@ -20,160 +16,147 @@ $(function() {
     );
   }
 
+  //SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
+  var serverETag;
 
-//SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
-var serverETag;
-
-//PULLS eTag FROM SERVER (FILLS INTO serverETag)
-var getEtagFromServer = function (){
-  $.ajax({
-   type: 'HEAD',
-   url: 'blogArticles.json',
-   // dataType: "json",
-   success: function( data, status, xhr){
-       var eTag = xhr.getResponseHeader('eTag');
-       console.log(eTag);
-       serverETag = eTag;
-     }
-   });
-}
-getEtagFromServer();
-//SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
-var localEtag = localStorage.getItem('localEtag');
-
-
-//TAKES SERVERSIDE ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
-var setEtagFromServer = function (){
-  console.log("trying to set etag from server to local storage");
-  localStorage.setItem('localEtag', serverETag);
-  console.log("done with setting etag from server to local storage");
-}
-
-//
-var getEtagFromBrowser = function (){
-  console.log("trying to get etag from localstorage to local storage");
-
-  eTagTemp = localStorage.getItem('localEtag', localEtag);
-  localEtag = eTagTemp;
-  return localEtag;
-
-}
-
-
-//PULLS OBJECT FROM SERVER (FILLS INTO SERVERCONTENT)
-var getArticleDataObjectFromServer = function (){
-  return $.ajax({
-    type: 'GET',
-    url: 'blogArticles.json',
-  });
-};
-
-
-getArticleDataObjectFromServer().done(function(data, textStatus, xhr){
-  console.log("got stuff from server good");
-  // localEtagPlaceholder = getEtagFromBrowser();
-  //CHECKS TO SEE IF THERE IS A LOCAL eTAG
-    if (localEtag){
-        getEtagFromServer();
-        if (localEtag !== serverETag){  //local  etag ==== server etag
-          console.log("cache needs update. Updating");
-          updateLocalArticles();
-                            //pull from local cache
-        } else {
-          console.log("cache up to date. Printing.");
-          printFromLocal();    //load from server
-        }
-    } else {
-        console.log("cache empty. Updating");
-        updateLocalArticles();         //pull data from server and load
-    }
-
-});
-
-
-//shamelessly accepted help from J. Hurr. Mad props for the assist, yo. :P
-var convertMarkdown = function(arrayOfObj){
-   for (ii = 0; ii<arrayOfObj.length; ii++){
-     if(arrayOfObj[ii].markdown){
-       arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
-     }
-   }
-   return arrayOfObj;
- };
-
-
-var updateLocalArticles = function(){
+  //PULLS eTag FROM SERVER (FILLS INTO serverETag)
+  var getEtagFromServer = function() {
+    $.ajax({
+      type: 'HEAD',
+      url: 'blogArticles.json',
+      // dataType: "json",
+      success: function(data, status, xhr) {
+        var eTag = xhr.getResponseHeader('eTag');
+        console.log(eTag);
+        serverETag = eTag;
+      }
+    });
+  }
   getEtagFromServer();
-  // newLocalEtag = serverETag;
-  setEtagFromServer();
-  // localStorage.setItem('localEtag', serverETag);
-  console.log(serverETag);
-  $.getJSON('blogArticles.json',function (localArticleData){
-    console.log('Updating local articles');
-    localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
-    console.log('local articles updated. Let do this thing!');
-    printFromLocal();
-  });
-};
+  //SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
+  var localEtag = localStorage.getItem('localEtag');
 
-//PRINTS ARTICLES. Takes local data, updated by updateLocal
-var printFromLocal = function(){
-  localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
-  console.log("these are raw from the JSON" );
-  console.log(localArticleData);
+  //TAKES SERVERSIDE ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
+  var setEtagFromServer = function() {
+    console.log("trying to set etag from server to local storage");
+    localStorage.setItem('localEtag', serverETag);
+    console.log("done with setting etag from server to local storage");
+  }
 
-  sortDate(localArticleData);
-  console.log("these are raw but sorted by date" );
-  console.log(localArticleData);
-  localArticleData = convertMarkdown(localArticleData);
-  console.log("these are modified to markdown" );
-  console.log(localArticleData);
+  var getEtagFromBrowser = function() {
+    console.log("trying to get etag from localstorage to local storage");
 
-  $.get( 'template.html' , function (z) {
-    console.log(z);
-    var theTemplate = Handlebars.compile(z);
-    console.log(theTemplate);
-    // console.log(localArticleData);
-      for (mm = 0; mm < localArticleData.length; mm++){
-        var compiledArticle = theTemplate(localArticleData[mm]);
-        // console.log("make an article!");
-        $('#articleWrapper').append(compiledArticle);
-        // console.log("print an article!");
+    eTagTemp = localStorage.getItem('localEtag', localEtag);
+    localEtag = eTagTemp;
+    return localEtag;
+  }
 
+  //PULLS OBJECT FROM SERVER (FILLS INTO SERVERCONTENT)
+  var getArticleDataObjectFromServer = function() {
+    return $.ajax({
+      type: 'GET',
+      url: 'blogArticles.json',
+    });
+  };
+
+
+  getArticleDataObjectFromServer().done(function(data, status_Code, xhr) {
+    console.log(status_Code);
+    console.log("got stuff from server good");
+    // localEtagPlaceholder = getEtagFromBrowser();
+    //CHECKS TO SEE IF THERE IS A LOCAL eTAG
+    if (localEtag) {
+      getEtagFromServer();
+      if (localEtag !== serverETag) { //local  etag ==== server etag
+        console.log("cache needs update. Updating");
+        updateLocalArticles();
+        //pull from local cache
+      } else {
+        console.log("cache up to date. Printing.");
+        printFromLocal(); //load from server
+      }
+    } else {
+      console.log("cache empty. Updating");
+      updateLocalArticles(); //pull data from server and load
     }
-    console.log("The computer gods are caprecious and perfectly just. You have in your Page what you made to be there. We all must reap what we sow. ");
-    // superTemoporaryLocalShorthand = getEtagFromBrowser();
-    // console.log(superTemoporaryLocalShorthand);
-  });
-  var populatedAuthorArray = populateAuthor();
-  // var populatedAuthorArray = getUnique(populatedAuthorArray);
-  var populatedCategoryArray = populateCategory();
-  // var populatedCategoryArray = getUnique(populatedCategoryArray);
-  // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-  // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
-}
 
-// var serverContent =
+  });
+
+
+  //shamelessly accepted help from J. Hurr. Mad props for the assist, yo. :P
+  var convertMarkdown = function(arrayOfObj) {
+    for (ii = 0; ii < arrayOfObj.length; ii++) {
+      if (arrayOfObj[ii].markdown) {
+        arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+      }
+    }
+    return arrayOfObj;
+  };
+
+  var updateLocalArticles = function() {
+    getEtagFromServer();
+    setEtagFromServer();
+    $.getJSON('blogArticles.json', function(localArticleData) {
+      console.log('Updating local articles');
+      localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
+      console.log('local articles updated. Let do this thing!');
+      printFromLocal();
+    });
+  };
+
+  //PRINTS ARTICLES. Takes local data, updated by updateLocal
+  var printFromLocal = function() {
+    localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
+    console.log("these are raw from the JSON");
+    console.log(localArticleData);
+
+    sortDate(localArticleData);
+    console.log("these are raw but sorted by date");
+    console.log(localArticleData);
+    localArticleData = convertMarkdown(localArticleData);
+    console.log("these are modified to markdown");
+    console.log(localArticleData);
+
+    $.get('template.html', function(z) {
+      console.log(z);
+      var theTemplate = Handlebars.compile(z);
+      console.log(theTemplate);
+      for (mm = 0; mm < localArticleData.length; mm++) {
+        var compiledArticle = theTemplate(localArticleData[mm]);
+        $('#articleWrapper').append(compiledArticle);
+
+      }
+      console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
+    });
+    var populatedAuthorArray = populateAuthor();
+    // var populatedAuthorArray = getUnique(populatedAuthorArray);
+    var populatedCategoryArray = populateCategory();
+    // var populatedCategoryArray = getUnique(populatedCategoryArray);
+    // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
+    // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+  }
+
+  // var serverContent =
   var localContent = localStorage.getItem('localArticleData');
-//Hides non-first paragraphs on load
-//   $('.articleContent').each(function(){
-//     $(this).children().not('p:first').hide();
-//   });
-//
-// //Button events listener that changes the display attribute relative to where the button was pressed.
-//   $(".expandArticleText").on('click', function() {
-//     $(this).prev().children().fadeIn();
-//     $(this).hide();
-//     $(this).next().show();
-//   });
-//
-//   $(".contractArticleText").on('click', function() {
-//     $(this).prev().prev().children().not('p:first').fadeOut();
-//     $(this).hide();
-//     $(this).prev().fadeIn();
-//     $(this).parent().prev().children().not('p:first').hide();
-//     $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
-//   });
+  //Hides non-first paragraphs on load
+  //   $('.articleContent').each(function(){
+  //     $(this).children().not('p:first').hide();
+  //   });
+  //
+  // //Button events listener that changes the display attribute relative to where the button was pressed.
+  //   $(".expandArticleText").on('click', function() {
+  //     $(this).prev().children().fadeIn();
+  //     $(this).hide();
+  //     $(this).next().show();
+  //   });
+  //
+  //   $(".contractArticleText").on('click', function() {
+  //     $(this).prev().prev().children().not('p:first').fadeOut();
+  //     $(this).hide();
+  //     $(this).prev().fadeIn();
+  //     $(this).parent().prev().children().not('p:first').hide();
+  //     $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
+  //   });
 
   $("#aboutNavElement").on('click', function() {
     console.log("registered onclick");

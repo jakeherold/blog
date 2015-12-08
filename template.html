@@ -1,16 +1,20 @@
+<div class="realArticle">
+  <header>
+    <h1>{{{title}}}</h1>
+    <br>
+    <p class="articleCategory">{{category}}</p>
+    <br>
+    <p class="authorSpot" href="{{{authorUrl}}}">{{{author}}}</p>
+    <br>
+    <div class="publishDate">{{{publishedOn}}}</div>
+    <br>
+  </header>
 
-  <div class="realArticle">
-    <header>
-      <h1>{{{title}}}</h1><br>
-      <p class="articleCategory">{{category}}</p><br>
-      <p class="authorSpot" href="{{{authorUrl}}}">{{{author}}}</p><br>
-      <div class="publishDate">{{{publishedOn}}}</div><br>
-    </header>
+
+  <section class="articleContent">{{{body}}}</section>
+  <br>
 
 
-    <section class="articleContent">{{{body}}}</section><br>
-
-
-    <p class="expandArticleText"> read more.... </p>
-    <p class="contractArticleText" style="display:none;"> read less.... </p>
-  </div>
+  <p class="expandArticleText"> read more.... </p>
+  <p class="contractArticleText" style="display:none;"> read less.... </p>
+</div>
