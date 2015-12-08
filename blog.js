@@ -108,28 +108,32 @@ var updateLocalArticles = function(){
 //PRINTS ARTICLES. Takes local data, updated by updateLocal
 var printFromLocal = function(){
   localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
-  console.log(localArticleData);
-  sortDate(localArticleData);
-  console.log(localArticleData);
-  localArticleData = convertMarkdown(localArticleData);
+  console.log("these are raw from the JSON" );
   console.log(localArticleData);
 
+  sortDate(localArticleData);
+  console.log("these are raw but sorted by date" );
+  console.log(localArticleData);
+  localArticleData = convertMarkdown(localArticleData);
+  console.log("these are modified to markdown" );
+  console.log(localArticleData);
 
   $.get( 'template.html' , function (z) {
     console.log(z);
     var theTemplate = Handlebars.compile(z);
     console.log(theTemplate);
     console.log(localArticleData);
-      for (mm = 0; mm < localArticleData; mm++){
+      for (mm = 0; mm < localArticleData.length; mm++){
         var compiledArticle = theTemplate(localArticleData[mm]);
         console.log("make an article!");
         $('#articleWrapper').append(compiledArticle);
         console.log("print an article!");
+
     }
-    console.log("lets hope to the lord that it printed, else may God have mercy on my soul");
+    console.log("The computer gods are caprecious and perfectly just. You have in your Page what you made to be there. We all must reap what we sow. ");
   });
-  // var populatedAuthorArray = populateAuthor();
-  // var populatedAuthorArray = getUnique(populatedAuthorArray);
+  var populatedAuthorArray = populateAuthor();
+  var populatedAuthorArray = getUnique(populatedAuthorArray);
   // var populatedCategoryArray = populateCategory();
   // var populatedCategoryArray = getUnique(populatedCategoryArray);
   // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
