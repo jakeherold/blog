@@ -1,5 +1,11 @@
+//Each locally stored object is ("localEtag":"numbers and crap", localArticleData: "bunch of article stuff")
 $(function() {
 
+
+
+
+
+//SORT DATE FUNCTION TO OPEN
   function sortDate(A) {
     A.sort(
       function(a, b) {
@@ -13,57 +19,119 @@ $(function() {
       }
     );
   }
-  sortDate(blog.rawData);
+  // sortDate(blog.rawData);
+
+//SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
+  var serverEtag;
+
+//SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
+  var localEtag = localStorage.getItem(localEtag);
 
 
-var eTagToStore;
 
-localTrue = localStorage.getItem(ii);
-if (localTrue){
-  if (localTrue === )
-
-
-
-} else {
-
+//PULLS eTag FROM SERVER (FILLS INTO serverETag)
+var getEtagFromServer = function (){
+  $.ajax({
+   type: 'HEAD',
+   url: 'blogArticles.json',
+   // dataType: "json",
+   success: function( data, status, xhr){
+       console.log(xhr.getResponseHeader ('eTag'));
+       var eTag = xhr.getResponseHeader('eTag');
+       serverETag = eTag;
+     }
+   });
 }
+//PULLS OBJECT FROM SERVER (FILLS INTO SERVERCONTENT)
+var getArticleDataObjectFromServer = function (){
+  return $.ajax({
+    type: 'GET',
+    url: 'blogArticles.json',
 
-var differentEtag = function (){
- $.ajax({
-  type: 'HEAD',
-  url: 'blogArticles.json',
-  // dataType: "json",
-  success: function( data, status, xhr){
-      console.log(xhr.getResponseHeader ('eTag'));
-      var eTag = xhr.getResponseHeader('eTag');
-      eTagToStore = eTag;
-      localStorage.setItem('dynamicEtag', eTagToStore);
+  });
+};
 
 
-  }
+getArticleDataObjectFromServer().done(function(data, textStatus, xhr){
+  console.log("got stuff from server good");
+  localEtagPlaceholder = getEtagFromBrowser();
+  //CHECKS TO SEE IF THERE IS A LOCAL eTAG
+    if (localEtagPlaceholder){
+        getEtagFromServer();
+        if (localEtagPlaceholder !== serverEtag){  //local  etag ==== server etag
+          console.log("cache needs update. Updating");
+          updateLocalArticles();
+                            //pull from local cache
+        } else {
+          console.log("cache up to date. Printing.");
+          printFromLocal();    //load from server
+        }
+    } else {
+        console.log("cache empty. Updating");
+        updateLocalArticles();         //pull data from server and load
+    }
+
 });
+
+//TAKES JS ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
+var setEtagFromServer = function (){
+  localStorage.setItem('localEtag', serverEtag);
+
 }
-// $.getJSON('blogArticles.json',);
-// localStorage
+
+//
+var getEtagFromBrowser = function (){
+  localStorage.getItem('localEtag', localEtag)
+}
+
+//shamelessly accepted help from J. Hurr. Mad props for the assist, yo. :P
+var convertMarkdown = function(arrayOfObj){
+   for (ii = 0; ii<arrayOfObj.length; ii++){
+     if(arrayOfObj[ii].markdown){
+       arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+     }
+   }
+   return arrayOfObj;
+ };
 
 
+var updateLocalArticles = function(){
+  localStorage.setItem('localEtag', localEtag);
+  $.getJSON('blogArticles.json',function (localArticleData){
+    console.log('Updating local articles');
+    localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
+    console.log('local articles updated. Let do this thing!');
+    printFromLocal();
+  });
+};
 
-var sameEtag = function(){
+//PRINTS ARTICLES. Takes local data, updated by updateLocal
+var printFromLocal = function(){
+  localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
+  sortDate(localArticleData);
+  localArticleData = convertMarkdown(localArticleData);
+
   $.get( 'template.html' , function (z) {
     console.log(z);
-
-      var theTemplate = Handlebars.compile(z);
-
+    var theTemplate = Handlebars.compile(z);
     console.log(theTemplate);
 
-      for (mm = 0; mm < blog.rawData.length; mm++){
-        var compiledArticle = theTemplate(blog.rawData[mm]);
+      for (mm = 0; mm < localArticleData; mm++){
+        var compiledArticle = theTemplate(localArticleData[mm]);
         $('#articleWrapper').append(compiledArticle);
     }
+    console.log("lets hope to the lord that it printed, else may God have mercy on my soul")
   });
+  var populatedAuthorArray = populateAuthor();
+  var populatedAuthorArray = getUnique(populatedAuthorArray);
+  var populatedCategoryArray = populateCategory();
+  var populatedCategoryArray = getUnique(populatedCategoryArray);
+  printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
+  printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 }
 
-
+// var serverContent =
+ localContent = localStorage.getItem('localArticleData');
 //Hides non-first paragraphs on load
   $('.articleContent').each(function(){
     $(this).children().not('p:first').hide();
@@ -114,27 +182,28 @@ var sameEtag = function(){
 
   function populateAuthor() {
     var authorArray = [];
-    for (jj = 0; jj < blog.rawData.length; jj++) {
-      authorArray.push(blog.rawData[jj].author);
+    for (jj = 0; jj < localContent.length; jj++) {
+      authorArray.push(localContent[jj].author);
       //console.log(blog.rawData[jj].author);
     }
     //console.log(authorArray);
     return authorArray;
   }
-  var populatedAuthorArray = populateAuthor();
-  var populatedAuthorArray = getUnique(populatedAuthorArray);
+  // var populatedAuthorArray = populateAuthor();
+  // var populatedAuthorArray = getUnique(populatedAuthorArray);
 
   var populateCategory = function() {
     var categoryArray = [];
-    for (kk = 0; kk < blog.rawData.length; kk++) {
-      categoryArray.push(blog.rawData[kk].category);
+    for (kk = 0; kk < localContent.length; kk++) {
+      categoryArray.push(localContent[kk].category);
       //console.log(blog.rawData[kk].category);
     }
     //console.log(categoryArray);
     return categoryArray;
   }
-  var populatedCategoryArray = populateCategory();
-  var populatedCategoryArray = getUnique(populatedCategoryArray);
+
+  // var populatedCategoryArray = populateCategory();
+  // var populatedCategoryArray = getUnique(populatedCategoryArray);
 
   //Functions to print unique arrays and option tags to the select tag
   function printToDropdown(array, elementId) {
@@ -144,8 +213,8 @@ var sameEtag = function(){
     }
   }
 
-  printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-  printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+  // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
+  // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
 
   $('#authorDropDownAnchor').on('change', function() {
     var author = $(this).val();
