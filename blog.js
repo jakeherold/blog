@@ -17,6 +17,18 @@ $(function() {
 
 
 var eTagToStore;
+
+localTrue = localStorage.getItem(ii);
+if (localTrue){
+  if (localTrue === )
+
+
+
+} else {
+
+}
+
+var differentEtag = function (){
  $.ajax({
   type: 'HEAD',
   url: 'blogArticles.json',
@@ -25,29 +37,31 @@ var eTagToStore;
       console.log(xhr.getResponseHeader ('eTag'));
       var eTag = xhr.getResponseHeader('eTag');
       eTagToStore = eTag;
-  }
-  // fail: funtion (request, textStatus, errorThrown){
-  //     alert(request.getResponseHeader('remoteData'));
-  // }
-});
+      localStorage.setItem('dynamicEtag', eTagToStore);
 
 
-
-
-
-$.get( 'template.html' , function (z) {
-  console.log(z);
-
-    var theTemplate = Handlebars.compile(z);
-
-  console.log(theTemplate);
-
-    for (mm = 0; mm < blog.rawData.length; mm++){
-      var compiledArticle = theTemplate(blog.rawData[mm]);
-      $('#articleWrapper').append(compiledArticle);
   }
 });
+}
+// $.getJSON('blogArticles.json',);
+// localStorage
 
+
+
+var sameEtag = function(){
+  $.get( 'template.html' , function (z) {
+    console.log(z);
+
+      var theTemplate = Handlebars.compile(z);
+
+    console.log(theTemplate);
+
+      for (mm = 0; mm < blog.rawData.length; mm++){
+        var compiledArticle = theTemplate(blog.rawData[mm]);
+        $('#articleWrapper').append(compiledArticle);
+    }
+  });
+}
 
 
 //Hides non-first paragraphs on load
