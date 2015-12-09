@@ -136,7 +136,6 @@ $(function() {
     // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
   }
 
-  // var serverContent =
   var localContent = localStorage.getItem('localArticleData');
   //Hides non-first paragraphs on load
   //   $('.articleContent').each(function(){
