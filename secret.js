@@ -46,7 +46,9 @@ $(function() {
     var secretData = {};
 
     var jsonStr = pJson.text(JSON.stringify(mObj));
-    var articleTemplate = $('#articleTemplate').html();
+
+    $.get('template.html', function(articleTemplate){
+    // var articleTemplate = $('#articleTemplate').html();
 
     var secretData = mObj;
     var renderer = Handlebars.compile(articleTemplate);
@@ -54,10 +56,12 @@ $(function() {
     var compiledHtml = renderer(mObj);
     $('#pMarkOut').html(compiledHtml);
 
-
+    attachTruncationButtons();
+  });
   }
 
   //Button events listener that changes the display attribute relative to where the button was pressed.
+  var attachTruncationButtons = function (){
   $(".expandArticleText").on('click', function() {
     $(this).prev().children().fadeIn();
     $(this).hide();
@@ -73,7 +77,7 @@ $(function() {
       scrollTop: $(this).closest('.realArticle').offset().top
     }, 400);
   });
-
+}
   // Any character change (article editing) updates the live output paragraphs
   textTitle.on('input', render);
   textBody.on('input', render);

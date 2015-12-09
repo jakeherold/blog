@@ -14,10 +14,12 @@ function makeSearchFilter(keyType, value){
     return A[keyType] == valueToSearchFor;
   }
 }
-
-
 // var searchResult = localContent.filter(makeSearchFilter("category", "sports"));
 // console.log(searchResult);
+
+
+
+
 
 //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
 function getUnique (array) {
@@ -34,19 +36,6 @@ function getUnique (array) {
   console.log("after =" + a);
   return a;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function makeAuthorArray(nameOfAuthor){
   var authArray = {};
@@ -66,53 +55,39 @@ function wordCount(rawArticles){
 // }
 
 
-// var bodyValue            = $(localContent.body).text();
-// var characterCount = $(localContent.text).length;
-// console.log(characterCount);
-// var avgLettersPerWord = ((characterCount) /(bodyValue));
-// console.log(avgLettersPerWord);
-// var caniHazMarkDown = $.grep(localContent, function(my) {
-//    return my.markdown;
-//  });
+//var characterCount = $(localContent.text).length;
+//var avgLettersPerWord = ((characterCount) /(bodyValue));
 //
-//  $.each(caniHazMarkDown, function(key, value) {
-//    bodyValue += $(marked(value.markdown)).text();
-//  });
-//  var wordCount = bodyValue.split(/\s+/).length;
-// console.log(wordCount);
-
-//$wordCount.append(" " + wordCount + 'words written');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//THE MAIN BIT
 
 function getStats (rawBrowserData){
-  var stats = stats || {};
-  console.log("JAKE! OVER HREE" + rawBrowserData);
+
+
+  var stats = stats || {}; //sets object to be filled with keys
   var rawArticles = rawBrowserData;
-  console.log("These are the raw articles" + rawArticles);
+  console.log(rawArticles);
+  var bodyValue = $(localContent.body).text();
+
   var articlesContainingHtmlStill;
   var articlesWordCount;
   var wordLengthsTotal;
-  // var bodyValue            = $(blogData.body).text();
+  var getArticleBody = $.grep(localContent, function(my) {
+     return my.markdown;
+   });
 
+   $.each(getArticleBody, function(key, value) {
+     bodyValue += $(marked(value.markdown)).text();
+   });
+
+  var wordArray = bodyValue.split(/\s+/); //sets an array with every word available
+  console.log(wordArray);
+
+  var wordCount = bodyValue.split(/\s+/).length;
+    console.log("total words on site is " +  wordCount);
   var arrayOfAuthors = rawArticles.map(makeAuthorArray)
   //var uniqueAuthorNames = getUnique(arrayOfAuthors); //redundant
-
+  stats.avgWordsPerArticle = Math.floor((wordCount)/(rawArticles.length));
+  console.log("number of words per article is " +stats.avgWordsPerArticle);
   stats.numberArticles = rawArticles.length;
   console.log("number of articles is: "+stats.numberArticles);
 
@@ -129,32 +104,12 @@ function getStats (rawBrowserData){
 };
 
 
-//works in console: saving for postarity
-
-
-
-//var numberOfUniqueAuthors = $.unique(arrayOfAuthors.map(function(A) { return A.author; })).length
-
-
-
-
-
-
-// var arrayOfAuthors = localContent.map(makeAuthorArray);
-
-
-
-
-
-
 function totalLengthOfWordsInArticle (){
 
 }
 function averageWordLength(){
 
 }
-// var arrayWithWordCount = localContent.map(wordCount());
-// console.log(arrayWithWordCount);
 
 
 function sum (thingToBeCounted){
@@ -165,18 +120,8 @@ function sum (thingToBeCounted){
   return total;
 }
 
-// var myCoolString = qq[0].body//(wordCount);
-// arrayOfAwesomeWords = myCoolString.split(/\s+/);
-// console.log(arrayOfAwesomeWords);
-//
-// console.log(arrayOfAwesomeWords.length);
-
-
-
 
 
 getStats(localContent);
 
-// var localContent = JSON.parse(localStorage.getItem('localArticleData'));
-// console.log(localContent);
 });//ends getJSON Callback
