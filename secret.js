@@ -21,12 +21,12 @@ $(function() {
     var bodVal = textBody.val(); // Raw body markup
 
 
-    var t = titleVal; //convert title markup to html
+    var t = marked(titleVal); //convert title markup to html
     var b = marked(bodVal); // Convert body markup to html
-    var a = authorVal; //convert author markup to html
-    var u = urlVal; // Convert URL markup to html
-    var d = dateVal;
-    var c = categoryVal; //convert category markup to html
+    var a = marked(authorVal); //convert author markup to html
+    var u = marked(urlVal); // Convert URL markup to html
+    var d = marked(dateVal);
+    var c = marked(categoryVal); //convert category markup to html
     var allTheBlock = t + a + u + c + b;
 
 
@@ -55,8 +55,10 @@ $(function() {
 
     var compiledHtml = renderer(mObj);
     $('#pMarkOut').html(compiledHtml);
-
-    attachTruncationButtons();
+    // hljs.highlightBlock("#articleDemo");
+    $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
   });
   }
 

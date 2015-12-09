@@ -37,9 +37,10 @@ function getUnique (array) {
   return a;
 }
 
-function makeAuthorArray(nameOfAuthor){
+//a=article
+function makeAuthorArray(a){
   var authArray = {};
-  authArray.author = nameOfAuthor.author;
+  authArray.author = a.author;
   return authArray;
 }
 function wordCount(rawArticles){
@@ -82,24 +83,36 @@ function getStats (rawBrowserData){
   var wordArray = bodyValue.split(/\s+/); //sets an array with every word available
   console.log(wordArray);
 
+//WORD COUNT
   var wordCount = bodyValue.split(/\s+/).length;
-    console.log("total words on site is " +  wordCount);
+  console.log("total words on site is " +  wordCount);
+  $('#wordCount').append(wordCount);
+
+//UNIQUE AUTHORS
   var arrayOfAuthors = rawArticles.map(makeAuthorArray)
-  //var uniqueAuthorNames = getUnique(arrayOfAuthors); //redundant
+  console.log(arrayOfAuthors);
+
+//WORDS PER ARTICLE
   stats.avgWordsPerArticle = Math.floor((wordCount)/(rawArticles.length));
   console.log("number of words per article is " +stats.avgWordsPerArticle);
+  $('#averageWordsPerArticle').append(stats.avgWordsPerArticle);
+
+//NUMBER OF ARTICLES
   stats.numberArticles = rawArticles.length;
   console.log("number of articles is: "+stats.numberArticles);
+  $('#numberArticles').append(stats.numberArticles);
 
+//NUMBER OF AUTHORS
   stats.numberAuthors = $.unique(arrayOfAuthors.map(function(A) { return A.author; })).length;
   console.log("Number of unique authors is: "+stats.numberAuthors);
+  $('#uniqueAuthors').append(stats.numberAuthors);
 
-  // articlesContainingHtmlStill = rawArticles.map(convertToMarkdown);
 
-  articlesWordCount = articlesContainingHtmlStill.map(articlesWordCount);
-  stats.wordLengthsTotal = articlesWordCount.reduce(sum);
-  wordLengthsTotal = articlesContainingHtmlStill.map(wordLengthsTotal);
-  stats.wordLengthAverage = Math.round(wordLengthsTotal.reduce(sum)/(wordLengthsTotal.length));
+  // stats.wordLengthsTotal = articlesWordCount.reduce(sum);
+  //
+  // wordLengthsTotal = articlesContainingHtmlStill.map(wordLengthsTotal);
+
+  // stats.wordLengthAverage = Math.round(wordLengthsTotal.reduce(sum)/(wordLengthsTotal.length));
   return stats;
 };
 
