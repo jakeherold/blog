@@ -70,7 +70,20 @@ function sum(p, n) {
 //var characterCount = $(localContent.text).length;
 //var avgLettersPerWord = ((characterCount) /(bodyValue));
 //
+
+function authorStatsMaker (author, authorAverageWordLength){
+  var authorStatsObject = {};
+  authorStatsObject.author = author;
+  authorStatsObject.avgWordLength = authorAverageWordLength;
+  return authorStatsObject;
+}
+
+
+
+
+
 //THE MAIN BIT
+
 
 function getStats (rawBrowserData){
 
@@ -131,7 +144,7 @@ $('#avgWordLength').append(stats.avgWordLength);
 
 //???????????????????WORK ZONE??????????????????
 
-
+stats.authorWordsPerArticle = [];
 var authorsWithMatchingArticles = [];
 
 uniqueAuthorArray.forEach(function(authorPassingThrough){
@@ -149,7 +162,13 @@ uniqueAuthorArray.forEach(function(authorPassingThrough){
 console.log(authorsWithMatchingArticles);
 
 authorsWithMatchingArticles.forEach(function(authorsWithMatchingArticles){
-
+  var author = authorsWithMatchingArticles[0].author;
+  perAuthorWordLengthArray = authorsWithMatchingArticles.map(getWordLengths);
+  perAuthorWordCountArray = authorsWithMatchingArticles.map(articlesWordCount);
+  authorAverageWordLength = Math.round((perAuthorWordLengthArray.reduce(sum))/(perAuthorWordCountArray));
+  stats.authorWordsPerArticle.push(authorStatsMaker(author, authorAverageWordLength) );
+  console.log(stats.authorWordsPerArticle);
+  $('#authorWordLengths').append(stats.authorWordsPerArticle);
 
 });
 
