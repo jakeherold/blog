@@ -48,13 +48,24 @@ function wordCount(rawArticles){
   return countedWordsInArticle
 }
 
+function wordLength(word){
+  return word.length;
+}
+function getWordLengths(x){
+  var wordsSplit = wordLength(x);
+  var arrayOfWordLengths = wordsSplit.map(wordLength);
+  console.log(wordsSplit);
+  return arrayOfWordLengths.reduce(sum);
+}
 // function convertToMarkdown(a){
 //   if (a.markdown){
 //     a.body = marked(a.markdown);
 //   }
 //   return a;
 // }
-
+function sum(p, n) {
+  return p + n;
+}
 
 //var characterCount = $(localContent.text).length;
 //var avgLettersPerWord = ((characterCount) /(bodyValue));
@@ -107,12 +118,23 @@ function getStats (rawBrowserData){
   console.log("Number of unique authors is: "+stats.numberAuthors);
   $('#uniqueAuthors').append(stats.numberAuthors);
 
+//Letters Per Word:
+console.log(wordArray);
+totalWordLengths = wordArray.map(wordLength);
+console.log(totalWordLengths);
+stats.avgWordLength = Math.round((totalWordLengths.reduce(sum))/(wordCount));
+console.log(stats.avgWordLength);
+$('#avgWordLength').append(stats.avgWordLength);
 
-  // stats.wordLengthsTotal = articlesWordCount.reduce(sum);
-  //
-  // wordLengthsTotal = articlesContainingHtmlStill.map(wordLengthsTotal);
 
-  // stats.wordLengthAverage = Math.round(wordLengthsTotal.reduce(sum)/(wordLengthsTotal.length));
+workByAuthor = makeSearchFilter("author", stats.numberAuthors);
+console.log(workByAuthor);
+
+
+
+
+
+
   return stats;
 };
 
@@ -125,13 +147,13 @@ function averageWordLength(){
 }
 
 
-function sum (thingToBeCounted){
-  var total = 0;
-  forEach (thingToBeCounted, function (thingToBeCounted){
-    total += thingToBeCounted;
-  })
-  return total;
-}
+// function sum (thingToBeCounted){
+//   var total = 0;
+//   thingToBeCounted.forEach (function (number){
+//     total += number;
+//   });
+//   return total;
+// }
 
 
 
