@@ -79,9 +79,6 @@ function authorStatsMaker (author, authorAverageWordLength){
 }
 
 
-
-
-
 //THE MAIN BIT
 
 
@@ -157,15 +154,19 @@ uniqueAuthorArray.forEach(function(authorPassingThrough){
       return false;
     }
   });
+  console.log(matchingArticles);
   authorsWithMatchingArticles.push(matchingArticles);
 });
 console.log(authorsWithMatchingArticles);
 
-authorsWithMatchingArticles.forEach(function(authorsWithMatchingArticles){
-  var author = authorsWithMatchingArticles[0].author;
-  perAuthorWordLengthArray = authorsWithMatchingArticles.map(getWordLengths);
-  perAuthorWordCountArray = authorsWithMatchingArticles.map(articlesWordCount);
-  authorAverageWordLength = Math.round((perAuthorWordLengthArray.reduce(sum))/(perAuthorWordCountArray));
+authorsWithMatchingArticles.forEach(function(item){
+  var finishedAuthors = [];
+  var author = item[0].author;
+  perAuthorWordLengthArray = item.map(wordCount);
+  perAuthorWordCountArray = item.map(articlesWordCount);
+
+  authorAverageWordLength = Math.round((perAuthorWordLengthArray.reduce(sum))/(perAuthorWordCountArray.length));
+
   stats.authorWordsPerArticle.push(authorStatsMaker(author, authorAverageWordLength) );
   console.log(stats.authorWordsPerArticle);
   $('#authorWordLengths').append(stats.authorWordsPerArticle);
