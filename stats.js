@@ -80,9 +80,9 @@ function getStats (rawBrowserData){
   console.log(rawArticles);
   var bodyValue = $(localContent.body).text();
 
-  var articlesContainingHtmlStill;
-  var articlesWordCount;
-  var wordLengthsTotal;
+  // var articlesContainingHtmlStill;
+  // var articlesWordCount;
+  // var wordLengthsTotal;
   var getArticleBody = $.grep(localContent, function(my) {
      return my.markdown;
    });
@@ -114,6 +114,8 @@ function getStats (rawBrowserData){
   $('#numberArticles').append(stats.numberArticles);
 
 //NUMBER OF AUTHORS
+  var uniqueAuthorArray = $.unique(arrayOfAuthors.map(function(A) { return A.author; }));
+  console.log(uniqueAuthorArray);
   stats.numberAuthors = $.unique(arrayOfAuthors.map(function(A) { return A.author; })).length;
   console.log("Number of unique authors is: "+stats.numberAuthors);
   $('#uniqueAuthors').append(stats.numberAuthors);
@@ -127,24 +129,49 @@ console.log(stats.avgWordLength);
 $('#avgWordLength').append(stats.avgWordLength);
 
 
-workByAuthor = makeSearchFilter("author", stats.numberAuthors);
-console.log(workByAuthor);
+//???????????????????WORK ZONE??????????????????
 
 
+var authorsWithMatchingArticles = [];
+
+uniqueAuthorArray.forEach(function(authorPassingThrough){
+  var matchingAuthor = authorPassingThrough;
+  var matchingArticles = localContent.filter(function(aa){
+    if (aa.author==matchingAuthor){
+      return true;
+    }
+    else {
+      return false;
+    }
+  });
+  authorsWithMatchingArticles.push(matchingArticles);
+});
+console.log(authorsWithMatchingArticles);
+
+authorsWithMatchingArticles.forEach(function(authorsWithMatchingArticles){
 
 
+});
 
+// //h for autHor
+// function wordCountPerAuthor (h){
+//    uniqueAuthorArray.forEach(function (){
+//
+//       return
+//
+// var workByAuthor = localContent.filter(makeSearchFilter("author", uniqueAuthorArray));
+// console.log(workByAuthor);
+//
+// });
+// };
+
+//!!!!!!!!!!!!!!!!!!!!!!!END WORK ZONE!!!!!!!!!!!!!
 
   return stats;
 };
 
 
-function totalLengthOfWordsInArticle (){
 
-}
-function averageWordLength(){
-
-}
 
 
 // function sum (thingToBeCounted){
