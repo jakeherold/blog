@@ -2,8 +2,49 @@
 $(function() {
 
 
+  var localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
+  var localContent = localStorage.getItem('localArticleData');
+  var data = convertMarkdown(localArticleData);
 
-  function convertMarkdown (arrayOfObj) {
+  webDB.init();
+  webDB.insertRecord(data);
+
+
+
+  //variables to hold author and category data for dropdown population
+  var arrayOfAuthors = data.map(makeAuthorArray)
+  var uniqueAuthorArray = $.unique(arrayOfAuthors.map(function(A) {
+    return A.author;
+  }));
+  var arrayOfCategories = data.map(makeCategoryArray);
+  var uniqueCategoryArray = $.unique(arrayOfCategories.map(function(C) {
+    return C.category;
+  }));
+
+  printToDropdown(uniqueAuthorArray, '#authorDropDownAnchor');
+  printToDropdown(uniqueCategoryArray, '#categoryDropDownAnchor');
+
+
+
+
+
+  //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
+  function getUnique(array) {
+    var u = {},
+      a = [];
+    for (var i = 0, l = array.length; i < l; ++i) {
+      if (u.hasOwnProperty(array[i])) {
+        continue;
+      }
+      a.push(array[i]);
+      u[array[i]] = 1;
+    }
+    return a;
+  }
+
+
+
+  function convertMarkdown(arrayOfObj) {
     for (ii = 0; ii < arrayOfObj.length; ii++) {
       if (arrayOfObj[ii].markdown) {
         arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
@@ -13,28 +54,7 @@ $(function() {
   };
 
 
-  var localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
-  console.log(localArticleData);
-  var data = convertMarkdown(localArticleData);
-
-webDB.init();
-webDB.insertRecord(data);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //SORT DATE FUNCTION TO OPEN
+  //SORT DATE FUNCTION
   function sortDate(A) {
     A.sort(
       function(a, b) {
@@ -49,6 +69,20 @@ webDB.insertRecord(data);
     );
   }
 
+  //a=article
+  function makeAuthorArray(a) {
+    var authArray = {};
+    authArray.author = a.author;
+    return authArray;
+  }
+
+  //c=category
+  function makeCategoryArray(c) {
+    var catArray = {};
+    catArray.category = c.category;
+    return catArray;
+  }
+
   //SETS EMPTY VARIBLE TO HOLD SERVER"S eTag VALUE
   var serverETag;
 
@@ -60,25 +94,23 @@ webDB.insertRecord(data);
       // dataType: "json",
       success: function(data, status, xhr) {
         var eTag = xhr.getResponseHeader('eTag');
-        console.log(eTag);
+        // console.log(eTag);
         serverETag = eTag;
       }
     });
   }
+
   getEtagFromServer();
+
   //SETS EMPTY VARIABLE TO HOLD THE eTag STORED LOCALLY
   var localEtag = localStorage.getItem('localEtag');
 
   //TAKES SERVERSIDE ETAG VARIABLE AND PRINTS IT TO LOCAL STORAGE
   var setEtagFromServer = function() {
-    console.log("trying to set etag from server to local storage");
     localStorage.setItem('localEtag', serverETag);
-    console.log("done with setting etag from server to local storage");
   }
 
   var getEtagFromBrowser = function() {
-    console.log("trying to get etag from localstorage to local storage");
-
     eTagTemp = localStorage.getItem('localEtag', localEtag);
     localEtag = eTagTemp;
     return localEtag;
@@ -94,7 +126,6 @@ webDB.insertRecord(data);
 
 
   getArticleDataObjectFromServer().done(function(data, status_Code, xhr) {
-    console.log(status_Code);
     console.log("got stuff from server good");
 
     //CHECKS TO SEE IF THERE IS A LOCAL eTAG
@@ -102,21 +133,20 @@ webDB.insertRecord(data);
       getEtagFromServer();
       if (localEtag !== serverETag) { //local  etag ==== server etag
         console.log("cache needs update. Updating");
-        updateLocalArticles();
-        //pull from local cache
+        updateLocalArticles();//pull data from server and load to cache
       } else {
         console.log("cache up to date. Printing.");
-        printFromLocal(); //load from server
+        printFromLocal(); //load from local cache
       }
     } else {
       console.log("cache empty. Updating");
-      updateLocalArticles(); //pull data from server and load
+      updateLocalArticles(); //pull data from server and load to cache
     }
 
   });
 
 
-  //shamelessly accepted help from J. Hurr. Mad props for the assist, yo. :P
+  //shamelessly accepted from J. Hurr. Mad props for the assist!
   var convertMarkdown = function(arrayOfObj) {
     for (ii = 0; ii < arrayOfObj.length; ii++) {
       if (arrayOfObj[ii].markdown) {
@@ -142,14 +172,10 @@ webDB.insertRecord(data);
 
 
     sortDate(localArticleData);
-    console.log(localArticleData);
     localArticleData = convertMarkdown(localArticleData);
-    console.log(localArticleData);
 
     $.get('template.html', function(z) {
-      console.log(z);
       var theTemplate = Handlebars.compile(z);
-      console.log(theTemplate);
       for (mm = 0; mm < localArticleData.length; mm++) {
         var compiledArticle = theTemplate(localArticleData[mm]);
         $('#articleWrapper').append(compiledArticle);
@@ -157,35 +183,34 @@ webDB.insertRecord(data);
       }
       console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
     });
-    var populatedAuthorArray = populateAuthor();
-    // var populatedAuthorArray = getUnique(populatedAuthorArray);
-    // var populatedCategoryArray = populateCategory();
-    // var populatedCategoryArray = getUnique(populatedCategoryArray);
-    // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-    printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+
     setEventListeners();
+    setExpandContractListeners();
   }
 
-  var localContent = localStorage.getItem('localArticleData');
-  //Hides non-first paragraphs on load
-  //   $('.articleContent').each(function(){
-  //     $(this).children().not('p:first').hide();
-  //   });
-  //
-  // //Button events listener that changes the display attribute relative to where the button was pressed.
-  //   $(".expandArticleText").on('click', function() {
-  //     $(this).prev().children().fadeIn();
-  //     $(this).hide();
-  //     $(this).next().show();
-  //   });
-  //
-  //   $(".contractArticleText").on('click', function() {
-  //     $(this).prev().prev().children().not('p:first').fadeOut();
-  //     $(this).hide();
-  //     $(this).prev().fadeIn();
-  //     $(this).parent().prev().children().not('p:first').hide();
-  //     $('html,body').animate( {scrollTop: $(this).closest('.realArticle').offset().top}, 400);
-  //   });
+  // Hides non-first paragraphs on load
+  function setExpandContractListeners() {
+    $('.articleContent').each(function() {
+      $(this).children().not('p:first').hide();
+    });
+
+    //Button events listener that changes the display attribute relative to where the button was pressed.
+    $(".expandArticleText").on('click', function() {
+      $(this).prev().children().fadeIn();
+      $(this).hide();
+      $(this).next().show();
+    });
+
+    $(".contractArticleText").on('click', function() {
+      $(this).prev().prev().children().not('p:first').fadeOut();
+      $(this).hide();
+      $(this).prev().fadeIn();
+      $(this).parent().prev().children().not('p:first').hide();
+      $('html,body').animate({
+        scrollTop: $(this).closest('.realArticle').offset().top
+      }, 400);
+    });
+  };
 
   $("#aboutNavElement").on('click', function() {
     $('#articleWrapper').fadeOut('slow');
@@ -197,93 +222,82 @@ webDB.insertRecord(data);
     $('#aboutDiv').fadeOut('fast');
   });
 
-  //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
-  var getUnique = function(array) {
-    var u = {},
-      a = [];
-    for (var i = 0, l = array.length; i < l; ++i) {
-      if (u.hasOwnProperty(array[i])) {
-        continue;
-      }
-      a.push(array[i]);
-      u[array[i]] = 1;
+
+
+  //gets messy array of objects, and filters by key
+  function populateUniqueArray(array, keyToFilterBy) {
+    var x = [];
+    for (vv = 0; vv < array.length; vv++) {
+      x.push(array[vv].keyToFilterBy);
     }
-    return a;
+    var z = $.unique(x.map(function(A) {
+      return A.keyToFilterBy;
+    }));
+    return z;
   }
 
   function populateAuthor() {
     var authorArray = [];
     for (jj = 0; jj < globalUniqueAuthorArray.length; jj++) {
       authorArray.push(globalUniqueAuthorArray[jj]);
-      //console.log(blog.rawData[jj].author);
     }
-    //console.log(authorArray);
     return authorArray;
   }
-  // var populatedAuthorArray = populateAuthor();
-  // var populatedAuthorArray = getUnique(populatedAuthorArray);
 
   var populateCategory = function() {
     var categoryArray = [];
     for (kk = 0; kk < localContent.length; kk++) {
       categoryArray.push(localContent[kk].category);
-      //console.log(blog.rawData[kk].category);
     }
-    //console.log(categoryArray);
     return categoryArray;
   }
 
-  // var populatedCategoryArray = populateCategory();
-  // var populatedCategoryArray = getUnique(populatedCategoryArray);
 
   //Functions to print unique arrays and option tags to the select tag
   function printToDropdown(array, elementId) {
     for (i = 0; i < array.length; i++) {
       $(elementId).append("<option value='" + array[i] + "'>" + array[i] + "</option>");
-      //console.log(array[i]);
     }
   }
 
-  // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-  // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
-function setEventListeners(){
-
-  $('#authorDropDownAnchor').on('change', function() {
-    var author = $(this).val();
-    $('.authorSpot').each(function() {
-      var text = $(this);
-      if (text.text() !== author) {
-        text.closest('.realArticle').hide();
-      } else {
-        text.closest('.realArticle').show();
-      }
-    })
-  });
-
-  $('#categoryDropDownAnchor').on('change',
-
-  function() {
-    var category = $(this).val();
-
-    $('.articleCategory').each(function() {
-      var text = $(this);
-      //shows all articles if Category placeholder is selected
-      if (text === "Category"){
-        console.log("cry havoc and let loose the articles regardless of category!");
-        $('.articleContent').each(function(){
-          $(this).children().not('p:first').hide();
-        });
-
-      }
-
-
-      //if thing selected equals article category, show all
-      else if(text.text() !== category) {
-        text.closest('.realArticle').hide();
-      } else {
-        text.closest('.realArticle').show();
-      }
+  function setEventListeners() {
+    //STARTS AUTHOR LISTENER
+    $('#authorDropDownAnchor').on('change', function() {
+      var author = $(this).val();
+      $('.authorSpot').each(function() {
+        var text = $(this);
+        if (text.text() !== author) {
+          text.closest('.realArticle').hide();
+        } else {
+          text.closest('.realArticle').show();
+        }
+      })
     });
-  });
- };
+    //STARTS CATEGORY EVENT LISTENER
+    $('#categoryDropDownAnchor').on('change', function() {
+      var category = $(this).val(); //general VARIABLE
+      $('.articleCategory').each(function() {
+        var text = $(this);
+        //shows all articles if Category placeholder is selected
+        if (text === "Category") {
+          console.log("cry havoc and let loose the articles regardless of category!");
+          $('.articleContent').each(function() {
+            $(this).children().not('p:first').hide();
+          });
+        }
+        //if thing selected equals article category, show all
+        else if (text.text() !== category) {
+          text.closest('.realArticle').hide();
+        } else {
+          text.closest('.realArticle').show();
+        }
+      });
+    });
+  };
+
+  //ENDS EVENT LISTENERS CALL SECTION
+
+
+
+
 }); //this one has to be here for IIFE
