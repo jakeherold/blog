@@ -63,7 +63,7 @@ $(function() {
   getArticleDataObjectFromServer().done(function(data, status_Code, xhr) {
     console.log(status_Code);
     console.log("got stuff from server good");
-    // localEtagPlaceholder = getEtagFromBrowser();
+
     //CHECKS TO SEE IF THERE IS A LOCAL eTAG
     if (localEtag) {
       getEtagFromServer();
@@ -107,14 +107,11 @@ $(function() {
   //PRINTS ARTICLES. Takes local data, updated by updateLocal
   var printFromLocal = function() {
     localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
-    console.log("these are raw from the JSON");
     console.log(localArticleData);
 
     sortDate(localArticleData);
-    console.log("these are raw but sorted by date");
     console.log(localArticleData);
     localArticleData = convertMarkdown(localArticleData);
-    console.log("these are modified to markdown");
     console.log(localArticleData);
 
     $.get('template.html', function(z) {
@@ -130,13 +127,13 @@ $(function() {
     });
     var populatedAuthorArray = populateAuthor();
     // var populatedAuthorArray = getUnique(populatedAuthorArray);
-    var populatedCategoryArray = populateCategory();
+    // var populatedCategoryArray = populateCategory();
     // var populatedCategoryArray = getUnique(populatedCategoryArray);
     // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
-    // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+    printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+    setEventListeners();
   }
 
-  // var serverContent =
   var localContent = localStorage.getItem('localArticleData');
   //Hides non-first paragraphs on load
   //   $('.articleContent').each(function(){
@@ -159,20 +156,17 @@ $(function() {
   //   });
 
   $("#aboutNavElement").on('click', function() {
-    console.log("registered onclick");
     $('#articleWrapper').fadeOut('slow');
     $('#aboutDiv').fadeIn();
   });
 
   $("#homeNavElement").on('click', function() {
-    console.log("registered onclick");
     $('#articleWrapper').fadeIn();
     $('#aboutDiv').fadeOut('fast');
   });
 
   //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
   var getUnique = function(array) {
-    console.log("before =" + array);
     var u = {},
       a = [];
     for (var i = 0, l = array.length; i < l; ++i) {
@@ -182,14 +176,13 @@ $(function() {
       a.push(array[i]);
       u[array[i]] = 1;
     }
-    console.log("after =" + a);
     return a;
   }
 
   function populateAuthor() {
     var authorArray = [];
-    for (jj = 0; jj < localContent.length; jj++) {
-      authorArray.push(localContent[jj].author);
+    for (jj = 0; jj < globalUniqueAuthorArray.length; jj++) {
+      authorArray.push(globalUniqueAuthorArray[jj]);
       //console.log(blog.rawData[jj].author);
     }
     //console.log(authorArray);
@@ -221,43 +214,44 @@ $(function() {
 
   // printToDropdown(populatedCategoryArray, '#categoryDropDownAnchor');
   // printToDropdown(populatedAuthorArray, '#authorDropDownAnchor');
+function setEventListeners(){
 
-  // $('#authorDropDownAnchor').on('change', function() {
-  //   var author = $(this).val();
-  //   $('.authorSpot').each(function() {
-  //     var text = $(this);
-  //     if (text.text() !== author) {
-  //       text.closest('.realArticle').hide();
-  //     } else {
-  //       text.closest('.realArticle').show();
-  //     }
-  //   })
-  // });
+  $('#authorDropDownAnchor').on('change', function() {
+    var author = $(this).val();
+    $('.authorSpot').each(function() {
+      var text = $(this);
+      if (text.text() !== author) {
+        text.closest('.realArticle').hide();
+      } else {
+        text.closest('.realArticle').show();
+      }
+    })
+  });
 
-  // $('#categoryDropDownAnchor').on('change',
-  //
-  // function() {
-  //   var category = $(this).val();
-  //
-  //   $('.articleCategory').each(function() {
-  //     var text = $(this);
-  //     //shows all articles if Category placeholder is selected
-  //     if (text === "Category"){
-  //       console.log("cry havoc and let loose the articles regardless of category!");
-  //       $('.articleContent').each(function(){
-  //         $(this).children().not('p:first').hide();
-  //       });
-  //
-  //     }
-  //
-  //
-  //     //if thing selected equals article category, show all
-  //     else if(text.text() !== category) {
-  //       text.closest('.realArticle').hide();
-  //     } else {
-  //       text.closest('.realArticle').show();
-  //     }
-  //   });
-  // });
+  $('#categoryDropDownAnchor').on('change',
 
+  function() {
+    var category = $(this).val();
+
+    $('.articleCategory').each(function() {
+      var text = $(this);
+      //shows all articles if Category placeholder is selected
+      if (text === "Category"){
+        console.log("cry havoc and let loose the articles regardless of category!");
+        $('.articleContent').each(function(){
+          $(this).children().not('p:first').hide();
+        });
+
+      }
+
+
+      //if thing selected equals article category, show all
+      else if(text.text() !== category) {
+        text.closest('.realArticle').hide();
+      } else {
+        text.closest('.realArticle').show();
+      }
+    });
+  });
+ };
 }); //this one has to be here for IIFE

@@ -8,9 +8,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-html{
-  padding: 2.5%;
-}
+
 
 body{
   background-color:#EFECCA;
@@ -42,7 +40,10 @@ body{
   margin:none;
   margin
 }
+#articleWrapper{
+  padding: 2.5%;
 
+}
 #blogName{
   font-family: 'Cabin' ;
 }
@@ -62,9 +63,9 @@ a{
 img{
   display: block;
   text-align: center;
-  /*margin:auto;*/
+  margin:auto;
   margin: 2.5%;
-  max-width: 25%;
+  max-height: 300px;
 
 }
 h1:first{
@@ -81,8 +82,14 @@ select{
   margin-bottom: 7.5px;
 }
 
+.realArticle{
+  font-family: serif;
+  text-align: center;
+}
+img{
+  max-width: 80%;
 
-
+}
 
 
 /***************
@@ -121,7 +128,14 @@ select{
     background-color: red;
 
   }
+  img{
+    display: block;
+    text-align: center;
+    /*margin:auto;*/
+    margin: 2.5%;
+    max-width: 80%;
 
+  }
 }
 
 

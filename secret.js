@@ -21,12 +21,12 @@ $(function() {
     var bodVal = textBody.val(); // Raw body markup
 
 
-    var t = titleVal; //convert title markup to html
+    var t = marked(titleVal); //convert title markup to html
     var b = marked(bodVal); // Convert body markup to html
-    var a = authorVal; //convert author markup to html
-    var u = urlVal; // Convert URL markup to html
-    var d = dateVal;
-    var c = categoryVal; //convert category markup to html
+    var a = marked(authorVal); //convert author markup to html
+    var u = marked(urlVal); // Convert URL markup to html
+    var d = marked(dateVal);
+    var c = marked(categoryVal); //convert category markup to html
     var allTheBlock = t + a + u + c + b;
 
 
@@ -46,18 +46,24 @@ $(function() {
     var secretData = {};
 
     var jsonStr = pJson.text(JSON.stringify(mObj));
-    var articleTemplate = $('#articleTemplate').html();
+
+    $.get('template.html', function(articleTemplate){
+    // var articleTemplate = $('#articleTemplate').html();
 
     var secretData = mObj;
     var renderer = Handlebars.compile(articleTemplate);
 
     var compiledHtml = renderer(mObj);
     $('#pMarkOut').html(compiledHtml);
-
-
+    // hljs.highlightBlock("#articleDemo");
+    $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+  });
   }
 
   //Button events listener that changes the display attribute relative to where the button was pressed.
+  var attachTruncationButtons = function (){
   $(".expandArticleText").on('click', function() {
     $(this).prev().children().fadeIn();
     $(this).hide();
@@ -73,7 +79,7 @@ $(function() {
       scrollTop: $(this).closest('.realArticle').offset().top
     }, 400);
   });
-
+}
   // Any character change (article editing) updates the live output paragraphs
   textTitle.on('input', render);
   textBody.on('input', render);
