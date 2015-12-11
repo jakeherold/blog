@@ -1,4 +1,4 @@
- var localContentRaw = $.getJSON('blogArticles.json', function(localContentRaw)
+var localContentRaw = $.getJSON('blogArticles.json', function(localContentRaw)
  {
 
 
@@ -122,7 +122,7 @@ function getStats (rawBrowserData){
   console.log(arrayOfAuthors);
 
 //WORDS PER ARTICLE
-  stats.avgWordsPerArticle = Math.floor((wordCount)/(rawArticles.length));
+  stats.avgWordsPerArticle = Math.floor((numWords)/(rawArticles.length));
   console.log("number of words per article is " +stats.avgWordsPerArticle);
   $('#averageWordsPerArticle').append(stats.avgWordsPerArticle);
 
@@ -142,7 +142,7 @@ function getStats (rawBrowserData){
 console.log(wordArray);
 totalWordLengths = wordArray.map(wordLength);
 console.log(totalWordLengths);
-stats.avgWordLength = Math.round((totalWordLengths.reduce(sum))/(wordCount));
+stats.avgWordLength = Math.round((totalWordLengths.reduce(sum))/(numWords));
 console.log(stats.avgWordLength);
 $('#avgWordLength').append(stats.avgWordLength);
 
@@ -251,3 +251,174 @@ console.log(stats.authorWordsPerArticle);
 getStats(localContent);
 
 });//ends getJSON Callback
+
+//////////////////////////////////////////////////////
+ //  var globalUniqueAuthorArray;
+ // var localContentRaw = $.getJSON('blogArticles.json', function(localContentRaw) {
+ //
+ //
+ //
+ //   var localContent = convertMarkdown(localContentRaw);
+ //   console.log(localContent);
+ //
+ //   //pass it (makeSearchFilter("keytype", "value"));
+ //   //example: var x = qq.filter(makeSearchFilter("author", "rowling"));
+ //   //returns array that fits criteria
+ //   function makeSearchFilter(keyType, value) {
+ //     var valueToSearchFor = value;
+ //     return function(A) {
+ //       return A[keyType] == valueToSearchFor;
+ //     }
+ //   }
+ //
+ //   //getUnique takes an array arguement and parses out all redundant bits of the array, returning a clean//simple array back
+ //   function getUnique(array) {
+ //     console.log("before =" + array);
+ //     var u = {},
+ //       a = [];
+ //     for (var i = 0, l = array.length; i < l; ++i) {
+ //       if (u.hasOwnProperty(array[i])) {
+ //         continue;
+ //       }
+ //       a.push(array[i]);
+ //       u[array[i]] = 1;
+ //     }
+ //     console.log("after =" + a);
+ //     return a;
+ //   }
+ //
+ //   //a=article
+ //   function makeAuthorArray(a) {
+ //     var authArray = {};
+ //     authArray.author = a.author;
+ //     return authArray;
+ //   }
+ //   //outputs interger
+ //   function wordCount(rawArticles) {
+ //     var countedWordsInArticle = $(rawArticles.body).text().split(' ').length;
+ //     return countedWordsInArticle
+ //   }
+ //
+ //   function wordLength(word) {
+ //     return word.length;
+ //   }
+ //
+ //   function getWordLengths(x) {
+ //     var wordsSplit = wordLength(x);
+ //     var arrayOfWordLengths = wordsSplit.map(wordLength);
+ //     return arrayOfWordLengths.reduce(sum);
+ //   }
+ //
+ //   function sum(p, n) {
+ //     return p + n;
+ //   }
+ //
+ //   function authorStatsMaker(author, authorAverageWordLength) {
+ //     var authorStatsObject = {};
+ //     authorStatsObject.author = author;
+ //     authorStatsObject.avgWordLength = authorAverageWordLength;
+ //     return authorStatsObject;
+ //   }
+ //
+ //   function convertMarkdown(arrayOfObj) {
+ //     for (ii = 0; ii < arrayOfObj.length; ii++) {
+ //       if (arrayOfObj[ii].markdown) {
+ //         arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+ //       }
+ //     }
+ //     return arrayOfObj;
+ //   };
+ //
+ //
+ //
+ //
+ //   ////////////////
+ //   //THE MAIN BIT//
+ //   ////////////////
+ //   function getStats(rawBrowserData) {
+ //
+ //     var stats = stats || {}; //sets object to be filled with keys
+ //     var rawArticles = rawBrowserData;
+ //     var bodyValue = 0;
+ //
+ //     var getArticleBody = $.grep(localContent, function(my) {
+ //       return my.markdown;
+ //     });
+ //
+ //     $.each(getArticleBody, function(key, value) {
+ //       bodyValue += $(marked(value.markdown)).text();
+ //       //  console.log(bodyValue);
+ //     });
+ //
+ //     var wordArray = bodyValue.split(/\s+/); //sets an array with every word available
+ //
+ //     //WORD COUNT
+ //     var numWords = wordArray.length;
+ //     console.log("total words on site is " + numWords);
+ //     $('#wordCount').append(numWords);
+ //
+ //     //ALL AUTHORS
+ //     var arrayOfAuthors = rawArticles.map(makeAuthorArray)
+ //
+ //     //WORDS PER ARTICLE
+ //     stats.avgWordsPerArticle = Math.floor((wordCount) / (rawArticles.length));
+ //     console.log("number of words per article is " + stats.avgWordsPerArticle);
+ //     $('#averageWordsPerArticle').append(stats.avgWordsPerArticle);
+ //
+ //     //NUMBER OF ARTICLES
+ //     stats.numberArticles = rawArticles.length;
+ //     console.log("number of articles is: " + stats.numberArticles);
+ //     $('#numberArticles').append(stats.numberArticles);
+ //
+ //     //Unique and number OF AUTHORS
+ //     var uniqueAuthorArray = $.unique(arrayOfAuthors.map(function(A) {
+ //       return A.author;
+ //     }));
+ //     console.log(uniqueAuthorArray);
+ //     globalUniqueAuthorArray = uniqueAuthorArray;
+ //     stats.numberAuthors = uniqueAuthorArray.length;
+ //     console.log("Number of unique authors is: " + stats.numberAuthors);
+ //     $('#uniqueAuthors').append(stats.numberAuthors);
+ //
+ //     //Letters Per Word:
+ //     totalWordLengths = wordArray.map(wordLength);
+ //     stats.avgWordLength = Math.round((totalWordLengths.reduce(sum)) / (wordCount));
+ //     console.log(stats.avgWordLength);
+ //     $('#avgWordLength').append(stats.avgWordLength);
+ //
+ //
+ //     //Really complicated section that gets each author's word count
+ //     function Author(name, wordCount) { //makes author object
+ //       this.name = name;
+ //       this.wordCount = wordCount;
+ //     }
+ //
+ //     stats.authorWordsPerArticle = uniqueAuthorArray.map(function(authorPassingThrough) { //iterates through the array holding each author's name
+ //
+ //       var matchingAuthor = authorPassingThrough; //sets matching author so we can use it in the function
+ //       var matchingArticles = localContent.filter(function(aa) { //filter processed articles, filtering by each author in uniqueAuthorsArray
+ //         if (aa.author == matchingAuthor) {
+ //           return true;
+ //         } else {
+ //           return false;
+ //         }
+ //       });
+ //       var wordCountArrayPerAuthor = matchingArticles.map(function(articleObject) { //get an array of numbers that returns words per article for a given author
+ //         var words = wordCount(articleObject);
+ //         return words;
+ //
+ //       });
+ //       var wordCountPerAuthor = wordCountArrayPerAuthor.reduce(sum); //takes all numbers for each array and sums them
+ //       var potato = new Author(authorPassingThrough, wordCountPerAuthor);
+ //       return potato;
+ //       // authorsWithMatchingArticles.push(matchingArticles);
+ //     });
+ //     console.log(stats.authorWordsPerArticle);
+ //     // console.log(authorsWithMatchingArticles);
+ //
+ //     return stats;
+ //   };
+ //
+ //   getStats(localContent);
+ //   console.log(globalUniqueAuthorArray);
+ // }); //ends getJSON Callback
