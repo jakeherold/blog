@@ -1,6 +1,39 @@
 //Each locally stored object is ("localEtag":"numbers and crap", localArticleData: "bunch of article stuff")
 $(function() {
 
+
+
+  function convertMarkdown (arrayOfObj) {
+    for (ii = 0; ii < arrayOfObj.length; ii++) {
+      if (arrayOfObj[ii].markdown) {
+        arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+      }
+    }
+    return arrayOfObj;
+  };
+
+
+  var localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
+  console.log(localArticleData);
+  var data = convertMarkdown(localArticleData);
+
+webDB.init();
+webDB.insertRecord(data);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //SORT DATE FUNCTION TO OPEN
   function sortDate(A) {
     A.sort(
@@ -106,8 +139,7 @@ $(function() {
 
   //PRINTS ARTICLES. Takes local data, updated by updateLocal
   var printFromLocal = function() {
-    localArticleData = JSON.parse(localStorage.getItem('localArticleData'));
-    console.log(localArticleData);
+
 
     sortDate(localArticleData);
     console.log(localArticleData);
