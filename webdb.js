@@ -45,6 +45,11 @@ webDB.setupTables = function () {
     }
   );
 };
+
+webDB.insertAllRecords = function(articles){
+  articles.forEach(webDB.insertRecord);
+};
+
 webDB.insertRecord = function (a) {
   // insert article record into database
   html5sql.process(
