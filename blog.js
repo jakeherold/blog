@@ -168,8 +168,7 @@ $(function() {
   };
 
   //PRINTS ARTICLES. Takes local data, updated by updateLocal
-  var printFromLocal = function() {
-
+   function printFromLocal() {
 
     sortDate(localArticleData);
     localArticleData = convertMarkdown(localArticleData);
@@ -179,38 +178,17 @@ $(function() {
       for (mm = 0; mm < localArticleData.length; mm++) {
         var compiledArticle = theTemplate(localArticleData[mm]);
         $('#articleWrapper').append(compiledArticle);
-
       }
       console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
+
+      setEventListeners();
+      setExpandContractListeners();
+
     });
 
-    setEventListeners();
-    setExpandContractListeners();
   }
 
-  // Hides non-first paragraphs on load
-  function setExpandContractListeners() {
-    $('.articleContent').each(function() {
-      $(this).children().not('p:first').hide();
-    });
 
-    //Button events listener that changes the display attribute relative to where the button was pressed.
-    $(".expandArticleText").on('click', function() {
-      $(this).prev().children().fadeIn();
-      $(this).hide();
-      $(this).next().show();
-    });
-
-    $(".contractArticleText").on('click', function() {
-      $(this).prev().prev().children().not('p:first').fadeOut();
-      $(this).hide();
-      $(this).prev().fadeIn();
-      $(this).parent().prev().children().not('p:first').hide();
-      $('html,body').animate({
-        scrollTop: $(this).closest('.realArticle').offset().top
-      }, 400);
-    });
-  };
 
   $("#aboutNavElement").on('click', function() {
     $('#articleWrapper').fadeOut('slow');
@@ -292,6 +270,29 @@ $(function() {
           text.closest('.realArticle').show();
         }
       });
+    });
+  };
+  // Hides non-first paragraphs on load
+  function setExpandContractListeners() {
+    $('.articleContent').each(function() {
+      $(this).children().not('p:first').hide();
+    });
+
+    //Button events listener that changes the display attribute relative to where the button was pressed.
+    $(".expandArticleText").on('click', function() {
+      $(this).prev().children().fadeIn();
+      $(this).hide();
+      $(this).next().show();
+    });
+
+    $(".contractArticleText").on('click', function() {
+      $(this).prev().prev().children().not('p:first').fadeOut();
+      $(this).hide();
+      $(this).prev().fadeIn();
+      $(this).parent().prev().children().not('p:first').hide();
+      $('html,body').animate({
+        scrollTop: $(this).closest('.realArticle').offset().top
+      }, 400);
     });
   };
 
