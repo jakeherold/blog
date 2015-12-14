@@ -4,7 +4,7 @@ $(function() {
 
 //++++++++++++++++++WORKZONE++++++++++++++++++++++++
 webDB.init();
-// runSQLcmd('DROP TABLE articles');
+webDB.execute('DROP TABLE articles');
 webDB.setupTables();
 
 var blogData ;
@@ -43,11 +43,12 @@ var ajaxRequest = $.ajax({
 //passed an array of objects
 function processJSON(data){
   middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
-  cleanData = sortDate(middleData); //takes the unorded, but body-consistant array and sorts by date\
-  console.log(cleanData);
+  
   webDB.setupTables();  //
-  webDB.insertAllRecords(cleanData);
-  WebDB.getAllArticles(printFromTable);//TODO
+  webDB.insertAllRecords(middleData);
+
+  // webDB.insertAllRecords(cleanData);
+  webDB.getAllArticles(printFromTable);//TODO
   localStorage.setItem('localEtag', localEtag);
   blogData = data;
   console.log('processJSON done.');
@@ -59,11 +60,11 @@ function printFromTable(d){
   $.get('template.html', function(templateData) {
 
     $.each(articleBeingProcessed, function (key, value){
-      $articleWrapper = ('#articleWrapper');
+      $articleWrapper = $('#articleWrapper');
       var theTemplate = Handlebars.compile(templateData);
       var finishedArticle = theTemplate(value);
       console.log(finishedArticle);
-      $('#articleWrapper').append(finishedArticle);
+      $articleWrapper.append(finishedArticle);
     });
 
   });
@@ -202,20 +203,20 @@ function setExpandContractListeners() {
   //
   //
   //
-  // //SORT DATE FUNCTION
-  // function sortDate(A) {
-  //   A.sort(
-  //     function(a, b) {
-  //       if (a.publishedOn < b.publishedOn) {
-  //         return 1;
-  //       }
-  //       if (a.publishedOn > b.publishedOn) {
-  //         return -1;
-  //       }
-  //       return 0;
-  //     }
-  //   );
-  // }
+  //SORT DATE FUNCTION
+  function sortDate(A) {
+    A.sort(
+      function(a, b) {
+        if (a.publishedOn < b.publishedOn) {
+          return 1;
+        }
+        if (a.publishedOn > b.publishedOn) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+  }
   //
   // //a=article
   // function makeAuthorArray(a) {
