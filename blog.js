@@ -16,6 +16,7 @@ var ajaxRequest = $.ajax({
   url: 'blogArticles.json',
 
   success: function(data, serveStatus, jqXHR){
+    console.log(serveStatus);
 
     serverEtag = jqXHR.getResponseHeader('eTag');
     localEtag  = localStorage.getItem('localEtag');
@@ -26,16 +27,24 @@ var ajaxRequest = $.ajax({
     }
     else {
       $.getJSON('blogArticles.json', processJSON);
+
+
+
+
+
+
     }
 
   }
+
 });
 
 
 //passed an array of objects
 function processJSON(data){
   middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
-  cleanData = sortDate(middleData); //takes the unorded, but body-consistant array and sorts by date
+  cleanData = sortDate(middleData); //takes the unorded, but body-consistant array and sorts by date\
+  console.log(cleanData);
   webDB.setupTables();  //
   webDB.insertAllRecords(cleanData);
   WebDB.getAllArticles(printFromTable);//TODO
@@ -53,7 +62,8 @@ function printFromTable(d){
       $articleWrapper = ('#articleWrapper');
       var theTemplate = Handlebars.compile(templateData);
       var finishedArticle = theTemplate(value);
-      $articleWrapper.append(finishedArticle);
+      console.log(finishedArticle);
+      $('#articleWrapper').append(finishedArticle);
     });
 
   });
