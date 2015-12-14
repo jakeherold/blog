@@ -1,8 +1,9 @@
-var localContentRaw = $.getJSON('blogArticles.json', function(localContentRaw)
- {
+var localContentRaw = $.getJSON('blogArticles.json', function(localContentRaw){
+
 
 var localContent = convertToMarkdown(localContentRaw);
  console.log(localContent);
+ $tableAnchor = $('#tableAnchor')
 //pass it (makeSearchFilter("keytype", "value"));
 //example: var x = qq.filter(makeSearchFilter("author", "rowling"));
 //returns array that fits criteria
@@ -68,6 +69,15 @@ function authorStatsMaker (author, authorAverageWordLength){
   return authorStatsObject;
 }
 
+function printAuthorWordsPerArticle (art) {
+  articles = art;
+  $.each(articles, function(){
+    $row = $('<tr>');
+    $cellOne = $('<td>').text(art.name); $row.append($cellOne);
+    $cellTwo = $('<td>').text(art.wordCount); $row.append($cellTwo);
+    $tableAnchor.append($row);
+  })
+};
 
 //THE MAIN BIT
 
@@ -143,23 +153,18 @@ stats.authorWordsPerArticle = uniqueAuthorArray.map(function(authorPassingThroug
   });
 
   var wordCountPerAuthor = wordCountArrayPerAuthor.reduce(sum); //takes all numbers for each array and sums them
-  var potato = new Author (authorPassingThrough , wordCountPerAuthor);
-  return potato;
+  var newAuthor = new Author (authorPassingThrough , wordCountPerAuthor);
+  printAuthorWordsPerArticle(newAuthor);
+  return newAuthor;
 
 });
-console.log(stats.authorWordsPerArticle);
-function printAuthorWordsPerArticle () {
-  var array = stats.authorWordsPerArticle;
-  for (i = 0; i < array.length; i++) {
-    $('#authorWordsPerArticle').append("<p"+array[i]+"</p>");
-    console.log(array[i]);
-  }
-};
-//!!!!!!!!!!!!!!!!!!!!!!!END Words per Author ZONE!!!!!!!!!!!!!
+  console.log(stats.authorWordsPerArticle);
 
+//!!!!!!!!!!!!!!!!!!!!!!!END Words per Author ZONE!!!!!!!!!!!!!
   return stats;
 };
 
 getStats(localContent);
+
 
 });//ends getJSON Callback
