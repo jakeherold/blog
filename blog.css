@@ -97,7 +97,7 @@ img{
 ****************/
 
 /* Mobile ->  phablet */
-@media screen and (min-width: 400px) {
+@media screen and (max-width: 400px) {
   .realArticle{
     margin:5%;
     padding-bottom: 2.5%;
@@ -114,7 +114,7 @@ img{
     margin-top:1em;
 
   }
-  .navItem{
+  a .navItem{
     display: block;
     text-align: center;
     font-size:.7em;
