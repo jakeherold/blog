@@ -10,6 +10,7 @@ webDB.setupTables();
 var blogData ;
 var localEtag;
 var serverEtag;
+
 var ajaxRequest = $.ajax({
   type: 'head',
   url: 'blogArticles.json',
