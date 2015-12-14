@@ -46,6 +46,10 @@ webDB.setupTables = function () {
   );
 };
 
+webDB.importArticlesFrom = function (path) {
+  $.getJSON(path, webDB.insertAllRecords);
+};
+
 webDB.insertAllRecords = function(articles){
   articles.forEach(webDB.insertRecord);
 };
@@ -69,6 +73,16 @@ webDB.execute = function (sql, callback) {
   callback = callback || function() {};
   html5sql.process(
     sql,
+    function (tx, result, resultArray) {
+      callback(resultArray);
+    }
+  );
+};
+
+webDB.getAllArticles = function (callback) {
+  callback = callback || function() {};
+  html5sql.process(
+    'SELECT * FROM articles;',
     function (tx, result, resultArray) {
       callback(resultArray);
     }
