@@ -64,7 +64,7 @@ webDB.insertRecord = function (a) {
       }
     ],
     function () {
-      console.log('Success inserting record for ' + a.title);
+      // console.log('Success inserting record for ' + a.title);
     }
   );
 };
