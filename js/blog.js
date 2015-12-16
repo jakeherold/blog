@@ -2,7 +2,7 @@
 $(function() {
 
 
-  //++++++++++++++++++WORKZONE++++++++++++++++++++++++
+  //                  WORKZONE
   webDB.init();
   webDB.setupTables();
 
@@ -53,20 +53,6 @@ $(function() {
   }
 
 
-
-  //author callback
-
-  function authorCallback (x){
-
-    x.forEach(function(object){
-      console.log(object.author);
-      $('#authorDropDownAnchor').append("<option value='" + object.author + "'>" + object.author + "</option>");
-
-    })
-  };
-
-
-
   function printFromTable(d) {
     blogContent = d;
     articleBeingProcessed = d;
@@ -78,15 +64,12 @@ $(function() {
         var finishedArticle = theTemplate(value);
         // console.log(finishedArticle);
         $articleWrapper.append(finishedArticle);
-
       });
-      webDB.getUniqueAuthors(authorCallback);
-      // setExpandContractListeners();
 
-      // populateDropdowns();
-      // console.log('WHAT UP ILLY!?');
+      webDB.getUniqueAuthors(authorCallback);
+      console.log('WHAT UP ILLY!?');
       setEventListeners();
-      // setExpandContractListeners();
+      setExpandContractListeners();
 
 
     });
@@ -156,26 +139,21 @@ $(function() {
     });
   };
 
+  //ENDS EVENT LISTENERS CALL SECTION
 
-  //
-  // function populateDropdowns() {
-  //
-  //   var Authors = webDB.getUniqueAuthors(authorCallback);
-  //   // var uAuthors = populateUniqueArray(Authors, author);
-  //   printToDropdown(Authors, 'authorDropDownAnchor');
-  //   console.log(Authors);
-  //   // var Categories = populateCategory();
-  //   // var uCategories = populateUniqueArray(Categories, "category");
-  //   // printToDropdown(uCategory, '#categoryDropDownAnchor');
-  // }
+  ////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////
+  //GET DATA FOR DROPDOWNS
 
+  //author callback
 
+  function authorCallback (x){
 
-
-
-
-
-
+    x.forEach(function(object){
+      console.log(object.author);
+      $('#authorDropDownAnchor').append("<option value='"+object.author+"'>"+object.author+ "</option>");
+    });
+  };
   //SORT DATE FUNCTION
   function sortDate(A) {
     A.sort(
@@ -191,10 +169,10 @@ $(function() {
     );
   }
 
-  // //gets messy array of objects, and filters by key
+  //gets messy array of objects, and filters by key
   // function populateUniqueArray(array, keyToFilterBy) {
   //   var x = [];
-  //   for (vv = 0; vv < array.length; vv++) {
+  //   for (vv = 0; vv < array.length; vv  ) {
   //     x.push(array[vv]);
   //   }
   //   var z = $.unique(x.map(function(A) {
@@ -203,15 +181,15 @@ $(function() {
   //   return z;
   // }
 
-//   function populateAuthor() {
-//
-//     webDB.getAllAuthor();
-//
-// };
+  // function populateAuthor() {
+  //
+  //   webDB.getAllAuthor();
+  //
+  // };
 
 
     // var authorArray = [];
-    // for (jj = 0; jj < blogContent.length; jj++) {
+    // for (jj = 0; jj < blogContent.length; jj  ) {
     //   authorArray.push(blogContent[jj].author);
     // }
     // var x = $.unique(authorArray.map(function(X){
@@ -219,35 +197,35 @@ $(function() {
     // }))
     // return x;
 
-
-  var populateCategory = function() {
-    var categoryArray = [];
-    for (kk = 0; kk < blogContent.length; kk++) {
-      categoryArray.push(blogContent[kk].category);
-    }
-    return categoryArray;
-  }
-
-
-  //Functions to print unique arrays and option tags to the select tag
-  function printToDropdown(array, elementId) {
-    for (i = 0; i < array.length; i++) {
-      $(elementId).append("<option value='" + array[i] + "'>" + array[i] + "</option>");
-    }
-  }
-
-  // $("#aboutNavElement").on('click', function() {
-  //   $('#articleWrapper').fadeOut('slow');
-  //   $('#aboutDiv').fadeIn();
-  // });
   //
-  // $("#homeNavElement").on('click', function() {
-  //   $('#articleWrapper').fadeIn();
-  //   $('#aboutDiv').fadeOut('slow');
-  // });
+  // var populateCategory = function() {
+  //   var categoryArray = [];
+  //   for (kk = 0; kk < blogContent.length; kk  ) {
+  //     categoryArray.push(blogContent[kk].category);
+  //   }
+  //   return categoryArray;
+  // }
 
 
+  // //Functions to print unique arrays and option tags to the select tag
+  // function printToDropdown(array, elementId) {
+  //   for (i = 0; i < array.length; i  ) {
+  //     $(elementId).append("<option value='"   array[i]   "'>"   array[i]   "</option>");
+  //   }
+  // }
 
+  $("#aboutNavElement").on('click', function() {
+    $('#articleWrapper').fadeOut('slow');
+    $('#aboutDiv').fadeIn();
+  });
+
+  $("#homeNavElement").on('click', function() {
+    $('#articleWrapper').fadeIn();
+    $('#aboutDiv').fadeOut('slow');
+  });
+
+
+  //
   // function getEtagFromBrowser() {
   //   eTagTemp = localStorage.getItem('localEtag', localEtag);
   //   localEtag = eTagTemp;
@@ -256,14 +234,14 @@ $(function() {
 
   //shamelessly accepted from J. Hurr. Mad props for the assist!
   function convertMarkdown(arrayOfObj) {
-    for (ii = 0; ii < arrayOfObj.length; ii++) {
+    for (ii = 0; ii < arrayOfObj.length; ii  ) {
       if (arrayOfObj[ii].markdown) {
         arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
       }
     }
     return arrayOfObj;
   };
-
+  //
   // var updateLocalArticles = function() {
   //   getEtagFromServer();
   //   setEtagFromServer();
@@ -283,7 +261,7 @@ $(function() {
   //
   //   $.get('template.html', function(z) {
   //     var theTemplate = Handlebars.compile(z);
-  //     for (mm = 0; mm < localArticleData.length; mm++) {
+  //     for (mm = 0; mm < localArticleData.length; mm  ) {
   //       var compiledArticle = theTemplate(localArticleData[mm]);
   //       $('#articleWrapper').append(compiledArticle);
   //     }
