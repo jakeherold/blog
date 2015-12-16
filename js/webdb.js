@@ -64,7 +64,7 @@ webDB.insertRecord = function (a) {
       }
     ],
     function () {
-      console.log('Success inserting record for ' + a.title);
+      // console.log('Success inserting record for ' + a.title);
     }
   );
 };
@@ -83,7 +83,8 @@ webDB.getAllArticles = function (callback) {
   console.log("get all articles running");
   callback = callback || function() {};
   html5sql.process(
-    'SELECT * FROM articles;',
+    // 'SELECT * FROM articles;',
+    'SELECT * FROM articles LIMIT 20',
     function (tx, result, resultArray) {
       console.log("inside GETALLARTICLES function");
       callback(resultArray);
@@ -93,7 +94,9 @@ webDB.getAllArticles = function (callback) {
 
 webDB.getUniqueAuthors = function(callback){
   html5sql.process(
-    'SELECT DISTINCT author FROM articles ORDER BY author;',
+    // 'SELECT DISTINCT author FROM articles ORDER BY author;',
+    'SELECT DISTINCT author FROM articles ORDER BY author LIMIT 20;',
+
     function (tx, results, resultArray){
       callback(resultArray);
     }
@@ -105,7 +108,9 @@ webDB.getUniqueAuthors = function(callback){
 
 webDB.getUniqueCategories = function(callback){
   html5sql.process(
-    'SELECT DISTINCT category FROM articles ORDER BY category;',
+    // 'SELECT DISTINCT category FROM articles ORDER BY category;',
+    'SELECT DISTINCT category FROM articles ORDER BY category LIMIT 20;',
+
     function (tx, results, resultArray){
       callback(resultArray);
     }

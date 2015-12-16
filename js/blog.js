@@ -39,15 +39,9 @@ console.log("local needs update");
 
   //passed an array of objects
   function processJSON(data) {
-    console.log('1');
     webDB.execute('DELETE FROM articles'); //TODO
-    console.log('2');
-    middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
-    console.log('3');
-    // webDB.setupTables();
-    webDB.insertAllRecords(middleData);
-console.log('4');
-    // webDB.insertAllRecords(cleanData);
+    processedData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
+    webDB.insertAllRecords(processedData);
     webDB.getAllArticles(printFromTable);
 
     localStorage.setItem('localEtag', localEtag);
@@ -63,7 +57,6 @@ console.log('4');
     $.get('template.html', function(templateData) {
 
       $.each(articleBeingProcessed, function(key, value) {
-        console.log("imma inside the each loop!");
         $articleWrapper = $('#articleWrapper');
         var theTemplate = Handlebars.compile(templateData);
         var finishedArticle = theTemplate(value);
@@ -72,7 +65,8 @@ console.log('4');
       });
 
       webDB.getUniqueAuthors(authorCallback);
-      console.log('WHAT UP ILLY!?');
+      webDB.getUniqueCategories(categoryCallback);
+      // console.log('WHAT UP ILLY!?');
       setEventListeners();
       setExpandContractListeners();
 
@@ -144,19 +138,19 @@ console.log('4');
     });
   };
 
-  //ENDS EVENT LISTENERS CALL SECTION
-
-  ////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////
-  //GET DATA FOR DROPDOWNS
 
   //author callback
 
   function authorCallback (x){
 
     x.forEach(function(object){
-      console.log(object.author);
       $('#authorDropDownAnchor').append("<option value='"+object.author+"'>"+object.author+ "</option>");
+    });
+  };
+
+  function categoryCallback (c){
+    c.forEach(function(object){
+      $('#categoryDropDownAnchor').append("<option value='"+object.category+"'>"+object.category+"</option>");
     });
   };
   //SORT DATE FUNCTION
@@ -174,50 +168,8 @@ console.log('4');
     );
   }
 
-  //gets messy array of objects, and filters by key
-  // function populateUniqueArray(array, keyToFilterBy) {
-  //   var x = [];
-  //   for (vv = 0; vv < array.length; vv  ) {
-  //     x.push(array[vv]);
-  //   }
-  //   var z = $.unique(x.map(function(A) {
-  //     return A.author;
-  //   }));
-  //   return z;
-  // }
-
-  // function populateAuthor() {
-  //
-  //   webDB.getAllAuthor();
-  //
-  // };
 
 
-    // var authorArray = [];
-    // for (jj = 0; jj < blogContent.length; jj  ) {
-    //   authorArray.push(blogContent[jj].author);
-    // }
-    // var x = $.unique(authorArray.map(function(X){
-    //   return X.author;
-    // }))
-    // return x;
-
-  //
-  // var populateCategory = function() {
-  //   var categoryArray = [];
-  //   for (kk = 0; kk < blogContent.length; kk  ) {
-  //     categoryArray.push(blogContent[kk].category);
-  //   }
-  //   return categoryArray;
-  // }
-
-
-  // //Functions to print unique arrays and option tags to the select tag
-  // function printToDropdown(array, elementId) {
-  //   for (i = 0; i < array.length; i  ) {
-  //     $(elementId).append("<option value='"   array[i]   "'>"   array[i]   "</option>");
-  //   }
-  // }
 
   $("#aboutNavElement").on('click', function() {
     $('#articleWrapper').fadeOut('slow');
@@ -230,18 +182,11 @@ console.log('4');
   });
 
 
-  //
-  // function getEtagFromBrowser() {
-  //   eTagTemp = localStorage.getItem('localEtag', localEtag);
-  //   localEtag = eTagTemp;
-  //   return localEtag;
-  // }
-
   function convertMarkdown(arrayOfObj) {
     console.log('about to loop in convertMarkdown');
 
     arrayOfObj.forEach(function(obj){
-console.log('in for loop, prior to if');
+// console.log('in for loop, prior to if');
       if (obj.markdown){
 
         obj.body = marked(obj.markdown);
@@ -250,43 +195,6 @@ console.log('in for loop, prior to if');
     })
     return arrayOfObj;
 
-    // for (ii = 0; ii < arrayOfObj.length; ii  ) {
-    //   console.log('in for loop, prior to if' + ii );
-    //   if (arrayOfObj[ii].markdown) {
-    //     console.log('Inside if statemtnt time number ' + ii);
-    //     arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
-    //   }
-    // }
-    // return arrayOfObj;
   };
-  //
-  // var updateLocalArticles = function() {
-  //   getEtagFromServer();
-  //   setEtagFromServer();
-  //   $.getJSON('blogArticles.json', function(localArticleData) {
-  //     console.log('Updating local articles');
-  //     localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
-  //     console.log('local articles updated. Let do this thing!');
-  //     printFromLocal();
-  //   });
-  // };
 
-  //PRINTS ARTICLES. Takes local data, updated by updateLocal
-  // function printFromLocal() {
-  //
-  //   sortDate(localArticleData);
-  //   localArticleData = convertMarkdown(localArticleData);
-  //
-  //   $.get('template.html', function(z) {
-  //     var theTemplate = Handlebars.compile(z);
-  //     for (mm = 0; mm < localArticleData.length; mm  ) {
-  //       var compiledArticle = theTemplate(localArticleData[mm]);
-  //       $('#articleWrapper').append(compiledArticle);
-  //     }
-  //     // console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
-  //
-  //     setEventListeners();
-  //     setExpandContractListeners();
-  //   });
-  // }
 }); //ends IIFE
