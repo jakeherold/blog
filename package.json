@@ -10,8 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/jakeherold/blog.git"
   },
+
   "author": "",
+
   "license": "ISC",
+
   "bugs": {
     "url": "https://github.com/jakeherold/blog/issues"
   },
