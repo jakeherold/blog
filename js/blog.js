@@ -53,6 +53,20 @@ $(function() {
   }
 
 
+
+  //author callback
+
+  function authorCallback (x){
+
+    x.forEach(function(object){
+      console.log(object.author);
+      $('#authorDropDownAnchor').append("<option value='" + object.author + "'>" + object.author + "</option>");
+
+    })
+  };
+
+
+
   function printFromTable(d) {
     blogContent = d;
     articleBeingProcessed = d;
@@ -66,27 +80,17 @@ $(function() {
         $articleWrapper.append(finishedArticle);
 
       });
-      setExpandContractListeners();
+      webDB.getUniqueAuthors(authorCallback);
+      // setExpandContractListeners();
 
-      populateDropdowns();
-      console.log('WHAT UP ILLY!?');
+      // populateDropdowns();
+      // console.log('WHAT UP ILLY!?');
       setEventListeners();
       // setExpandContractListeners();
 
 
     });
-    // .done(function(){
-    //   populateDropdowns();
-    //   console.log('WHAT UP ILLY!?');
-    //   setEventListeners();
-    //   setExpandContractListeners();
-    // });
 
-
-    // populateDropdowns();
-    // console.log('WHAT UP ILLY!?');
-    // setEventListeners();
-    // setExpandContractListeners();
 
   };
 
@@ -152,34 +156,21 @@ $(function() {
     });
   };
 
-  //ENDS EVENT LISTENERS CALL SECTION
 
-  ////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////
-  //GET DATA FOR DROPDOWNS
-
-  function populateDropdowns() {
-
-    var Authors = webDB.getUniqueAuthors(authorCallback);
-    // var uAuthors = populateUniqueArray(Authors, author);
-    printToDropdown(Authors, 'authorDropDownAnchor');
-    console.log(Authors);
-    // var Categories = populateCategory();
-    // var uCategories = populateUniqueArray(Categories, "category");
-    // printToDropdown(uCategory, '#categoryDropDownAnchor');
-  }
+  //
+  // function populateDropdowns() {
+  //
+  //   var Authors = webDB.getUniqueAuthors(authorCallback);
+  //   // var uAuthors = populateUniqueArray(Authors, author);
+  //   printToDropdown(Authors, 'authorDropDownAnchor');
+  //   console.log(Authors);
+  //   // var Categories = populateCategory();
+  //   // var uCategories = populateUniqueArray(Categories, "category");
+  //   // printToDropdown(uCategory, '#categoryDropDownAnchor');
+  // }
 
 
-  //author callback
 
-  function authorCallback (array){
-    var tempArray = [];
-    array.forEach(function(){
-      tempArray.push(array.author);
-    });
-    return tempArray;
-
-  };
 
 
 
@@ -200,17 +191,17 @@ $(function() {
     );
   }
 
-  //gets messy array of objects, and filters by key
-  function populateUniqueArray(array, keyToFilterBy) {
-    var x = [];
-    for (vv = 0; vv < array.length; vv++) {
-      x.push(array[vv]);
-    }
-    var z = $.unique(x.map(function(A) {
-      return A.author;
-    }));
-    return z;
-  }
+  // //gets messy array of objects, and filters by key
+  // function populateUniqueArray(array, keyToFilterBy) {
+  //   var x = [];
+  //   for (vv = 0; vv < array.length; vv++) {
+  //     x.push(array[vv]);
+  //   }
+  //   var z = $.unique(x.map(function(A) {
+  //     return A.author;
+  //   }));
+  //   return z;
+  // }
 
 //   function populateAuthor() {
 //
@@ -257,11 +248,11 @@ $(function() {
 
 
 
-  function getEtagFromBrowser() {
-    eTagTemp = localStorage.getItem('localEtag', localEtag);
-    localEtag = eTagTemp;
-    return localEtag;
-  }
+  // function getEtagFromBrowser() {
+  //   eTagTemp = localStorage.getItem('localEtag', localEtag);
+  //   localEtag = eTagTemp;
+  //   return localEtag;
+  // }
 
   //shamelessly accepted from J. Hurr. Mad props for the assist!
   function convertMarkdown(arrayOfObj) {
@@ -273,33 +264,33 @@ $(function() {
     return arrayOfObj;
   };
 
-  var updateLocalArticles = function() {
-    getEtagFromServer();
-    setEtagFromServer();
-    $.getJSON('blogArticles.json', function(localArticleData) {
-      console.log('Updating local articles');
-      localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
-      console.log('local articles updated. Let do this thing!');
-      printFromLocal();
-    });
-  };
+  // var updateLocalArticles = function() {
+  //   getEtagFromServer();
+  //   setEtagFromServer();
+  //   $.getJSON('blogArticles.json', function(localArticleData) {
+  //     console.log('Updating local articles');
+  //     localStorage.setItem('localArticleData', JSON.stringify(localArticleData));
+  //     console.log('local articles updated. Let do this thing!');
+  //     printFromLocal();
+  //   });
+  // };
 
   //PRINTS ARTICLES. Takes local data, updated by updateLocal
-  function printFromLocal() {
-
-    sortDate(localArticleData);
-    localArticleData = convertMarkdown(localArticleData);
-
-    $.get('template.html', function(z) {
-      var theTemplate = Handlebars.compile(z);
-      for (mm = 0; mm < localArticleData.length; mm++) {
-        var compiledArticle = theTemplate(localArticleData[mm]);
-        $('#articleWrapper').append(compiledArticle);
-      }
-      // console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
-
-      setEventListeners();
-      setExpandContractListeners();
-    });
-  }
+  // function printFromLocal() {
+  //
+  //   sortDate(localArticleData);
+  //   localArticleData = convertMarkdown(localArticleData);
+  //
+  //   $.get('template.html', function(z) {
+  //     var theTemplate = Handlebars.compile(z);
+  //     for (mm = 0; mm < localArticleData.length; mm++) {
+  //       var compiledArticle = theTemplate(localArticleData[mm]);
+  //       $('#articleWrapper').append(compiledArticle);
+  //     }
+  //     // console.log("The computer gods are perfectly just. To them, capriciousness is anathema. You have in your Page what you made to be there. We all must reap what we sow. ");
+  //
+  //     setEventListeners();
+  //     setExpandContractListeners();
+  //   });
+  // }
 }); //ends IIFE
