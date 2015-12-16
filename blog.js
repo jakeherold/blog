@@ -243,15 +243,15 @@ $(function() {
     }
   }
 
-  $("#aboutNavElement").on('click', function() {
-    $('#articleWrapper').fadeOut('slow');
-    $('#aboutDiv').fadeIn();
-  });
-
-  $("#homeNavElement").on('click', function() {
-    $('#articleWrapper').fadeIn();
-    $('#aboutDiv').fadeOut('slow');
-  });
+  // $("#aboutNavElement").on('click', function() {
+  //   $('#articleWrapper').fadeOut('slow');
+  //   $('#aboutDiv').fadeIn();
+  // });
+  //
+  // $("#homeNavElement").on('click', function() {
+  //   $('#articleWrapper').fadeIn();
+  //   $('#aboutDiv').fadeOut('slow');
+  // });
 
 
 
