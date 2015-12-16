@@ -4,7 +4,7 @@ $(function() {
 
   //                  WORKZONE
   webDB.init();
-  webDB.setupTables();
+  // webDB.setupTables();
 
   var blogData;
   var blogContent;
@@ -23,12 +23,13 @@ $(function() {
       console.log('ajaxRequest was successful');
 
       if (serverEtag == localEtag) {
+console.log("local up to date, printing");
         webDB.getAllArticles(printFromTable);
         // blogContent = webDB.getAllArticles();
         // console.log(blogContent);
 
       } else {
-
+console.log("local needs update");
         $.getJSON('blogArticles.json', processJSON);
       }
 
@@ -38,15 +39,17 @@ $(function() {
 
   //passed an array of objects
   function processJSON(data) {
-    webDB.execute('DROP TABLE articles'); //TODO
-
+    console.log('1');
+    webDB.execute('DELETE FROM articles'); //TODO
+    console.log('2');
     middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
-
-    webDB.setupTables();
+    console.log('3');
+    // webDB.setupTables();
     webDB.insertAllRecords(middleData);
-
+console.log('4');
     // webDB.insertAllRecords(cleanData);
     webDB.getAllArticles(printFromTable);
+
     localStorage.setItem('localEtag', localEtag);
     blogData = data;
     console.log('processJSON done.');
@@ -54,11 +57,13 @@ $(function() {
 
 
   function printFromTable(d) {
+    console.log("PRINTING FROM TABLE")
     blogContent = d;
     articleBeingProcessed = d;
     $.get('template.html', function(templateData) {
 
       $.each(articleBeingProcessed, function(key, value) {
+        console.log("imma inside the each loop!");
         $articleWrapper = $('#articleWrapper');
         var theTemplate = Handlebars.compile(templateData);
         var finishedArticle = theTemplate(value);
@@ -232,14 +237,27 @@ $(function() {
   //   return localEtag;
   // }
 
-  //shamelessly accepted from J. Hurr. Mad props for the assist!
   function convertMarkdown(arrayOfObj) {
-    for (ii = 0; ii < arrayOfObj.length; ii  ) {
-      if (arrayOfObj[ii].markdown) {
-        arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+    console.log('about to loop in convertMarkdown');
+
+    arrayOfObj.forEach(function(obj){
+console.log('in for loop, prior to if');
+      if (obj.markdown){
+
+        obj.body = marked(obj.markdown);
+        // console.log(obj.body);
       }
-    }
+    })
     return arrayOfObj;
+
+    // for (ii = 0; ii < arrayOfObj.length; ii  ) {
+    //   console.log('in for loop, prior to if' + ii );
+    //   if (arrayOfObj[ii].markdown) {
+    //     console.log('Inside if statemtnt time number ' + ii);
+    //     arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
+    //   }
+    // }
+    // return arrayOfObj;
   };
   //
   // var updateLocalArticles = function() {

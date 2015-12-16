@@ -64,7 +64,7 @@ webDB.insertRecord = function (a) {
       }
     ],
     function () {
-      // console.log('Success inserting record for ' + a.title);
+      console.log('Success inserting record for ' + a.title);
     }
   );
 };
@@ -80,10 +80,12 @@ webDB.execute = function (sql, callback) {
 };
 
 webDB.getAllArticles = function (callback) {
+  console.log("get all articles running");
   callback = callback || function() {};
   html5sql.process(
     'SELECT * FROM articles;',
     function (tx, result, resultArray) {
+      console.log("inside GETALLARTICLES function");
       callback(resultArray);
     }
   );
