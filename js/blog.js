@@ -110,6 +110,7 @@ console.log("local needs update");
         }
       });
     });
+
   };
 
 
@@ -122,7 +123,7 @@ console.log("local needs update");
 
     //Button events listener that changes the display attribute relative to where the button was pressed.
     $(".expandArticleText").on('click', function() {
-      $(this).prev().children().fadeIn();
+      $(this).parent().children().fadeIn();
       $(this).hide();
       $(this).next().show();
     });
