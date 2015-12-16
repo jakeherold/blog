@@ -1,0 +1,24 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakeherold/blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakeherold/blog/issues"
+  },
+  "homepage": "https://github.com/jakeherold/blog#readme",
+  "dependencies": {
+  "express": "^4.13.3",
+  "express-request-proxy": "^1.0.10",
+  "pushstate-server": "^1.8.1"
+  }
+}
