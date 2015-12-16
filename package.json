@@ -10,9 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/jakeherold/blog.git"
   },
-  {"engines":"4.x"},
-  "author": "",
-
+  "engines":{
+    "node":"4.x"
+  },
+  "author": "Jake Herold",
+	
   "license": "ISC",
 
   "bugs": {
