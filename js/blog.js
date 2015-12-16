@@ -64,12 +64,14 @@ $(function() {
         var finishedArticle = theTemplate(value);
         // console.log(finishedArticle);
         $articleWrapper.append(finishedArticle);
+
       });
+      setExpandContractListeners();
 
       populateDropdowns();
       console.log('WHAT UP ILLY!?');
       setEventListeners();
-      setExpandContractListeners();
+      // setExpandContractListeners();
 
 
     });
