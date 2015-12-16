@@ -88,3 +88,24 @@ webDB.getAllArticles = function (callback) {
     }
   );
 };
+
+webDB.getUniqueAuthors = function(callback){
+  html5sql.process(
+    'SELECT DISTINCT author FROM articles ORDER BY author;',
+    function (tx, results, resultArray){
+      callback(resultArray);
+    }
+  );
+};
+
+
+
+
+webDB.getUniqueCategories = function(callback){
+  html5sql.process(
+    'SELECT DISTINCT category FROM articles ORDER BY category;',
+    function (tx, results, resultArray){
+      callback(resultArray);
+    }
+  );
+};

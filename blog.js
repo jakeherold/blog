@@ -2,91 +2,89 @@
 $(function() {
 
 
-//++++++++++++++++++WORKZONE++++++++++++++++++++++++
-webDB.init();
-webDB.execute('DROP TABLE articles'); //TODO
-webDB.setupTables();
-
-var blogData ;
-var blogContent;
-var localEtag;
-var serverEtag;
-
-var ajaxRequest = $.ajax({
-  type: 'head',
-  url: 'blogArticles.json',
-
-  success: function(data, serveStatus, jqXHR){
-    console.log(serveStatus);
-
-    serverEtag = jqXHR.getResponseHeader('eTag');
-    localEtag  = localStorage.getItem('localEtag');
-    console.log('ajaxRequest was successful');
-
-    if (serverEtag == localEtag){
-      webDB.getAllArticles(printFromTable);
-      // blogContent = webDB.getAllArticles();
-      // console.log(blogContent);
-
-    }
-    else {
-      $.getJSON('blogArticles.json', processJSON);
-    }
-
-  }
-
-});
-
-// .done(){
-//
-// }
-//passed an array of objects
-function processJSON(data){
-  middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
-
+  //++++++++++++++++++WORKZONE++++++++++++++++++++++++
+  webDB.init();
   webDB.setupTables();
-  webDB.insertAllRecords(middleData);
 
-  // webDB.insertAllRecords(cleanData);
-  webDB.getAllArticles(printFromTable);
-  localStorage.setItem('localEtag', localEtag);
-  blogData = data;
-  console.log('processJSON done.');
-}
+  var blogData;
+  var blogContent;
+  var localEtag;
+  var serverEtag;
 
+  var ajaxRequest = $.ajax({
+    type: 'head',
+    url: 'blogArticles.json',
 
-function printFromTable(d){
-  blogContent = d;
-  articleBeingProcessed = d;
-  $.get('template.html', function(templateData) {
+    success: function(data, serveStatus, jqXHR) {
+      console.log(serveStatus);
 
-    $.each(articleBeingProcessed, function (key, value){
-      $articleWrapper = $('#articleWrapper');
-      var theTemplate = Handlebars.compile(templateData);
-      var finishedArticle = theTemplate(value);
-      // console.log(finishedArticle);
-      $articleWrapper.append(finishedArticle);
-    });
+      serverEtag = jqXHR.getResponseHeader('eTag');
+      localEtag = localStorage.getItem('localEtag');
+      console.log('ajaxRequest was successful');
 
-    populateDropdowns();
-    console.log('WHAT UP ILLY!?');
-    setEventListeners();
-    setExpandContractListeners();
+      if (serverEtag == localEtag) {
+        webDB.getAllArticles(printFromTable);
+        // blogContent = webDB.getAllArticles();
+        // console.log(blogContent);
 
+      } else {
+
+        $.getJSON('blogArticles.json', processJSON);
+      }
+
+    }
 
   });
-  // .done(function(){
-  //   populateDropdowns();
-  //   console.log('WHAT UP ILLY!?');
-  //   setEventListeners();
-  //   setExpandContractListeners();
-  // });
+
+  //passed an array of objects
+  function processJSON(data) {
+    webDB.execute('DROP TABLE articles'); //TODO
+
+    middleData = convertMarkdown(data); //takes raw data with mix of body and markdown notations, and makes them all have at least body
+
+    webDB.setupTables();
+    webDB.insertAllRecords(middleData);
+
+    // webDB.insertAllRecords(cleanData);
+    webDB.getAllArticles(printFromTable);
+    localStorage.setItem('localEtag', localEtag);
+    blogData = data;
+    console.log('processJSON done.');
+  }
 
 
-  // populateDropdowns();
-  // console.log('WHAT UP ILLY!?');
-  // setEventListeners();
-  // setExpandContractListeners();
+  function printFromTable(d) {
+    blogContent = d;
+    articleBeingProcessed = d;
+    $.get('template.html', function(templateData) {
+
+      $.each(articleBeingProcessed, function(key, value) {
+        $articleWrapper = $('#articleWrapper');
+        var theTemplate = Handlebars.compile(templateData);
+        var finishedArticle = theTemplate(value);
+        // console.log(finishedArticle);
+        $articleWrapper.append(finishedArticle);
+      });
+
+      populateDropdowns();
+      console.log('WHAT UP ILLY!?');
+      setEventListeners();
+      setExpandContractListeners();
+
+
+    });
+    // .done(function(){
+    //   populateDropdowns();
+    //   console.log('WHAT UP ILLY!?');
+    //   setEventListeners();
+    //   setExpandContractListeners();
+    // });
+
+
+    // populateDropdowns();
+    // console.log('WHAT UP ILLY!?');
+    // setEventListeners();
+    // setExpandContractListeners();
 
   };
 
@@ -158,15 +156,33 @@ function printFromTable(d){
   ////////////////////////////////////////////////////////////
   //GET DATA FOR DROPDOWNS
 
-  function populateDropdowns(){
+  function populateDropdowns() {
 
-    var Authors = populateAuthor();
+    var Authors = webDB.getUniqueAuthors(authorCallback);
     // var uAuthors = populateUniqueArray(Authors, author);
     printToDropdown(Authors, 'authorDropDownAnchor');
+    console.log(Authors);
     // var Categories = populateCategory();
     // var uCategories = populateUniqueArray(Categories, "category");
     // printToDropdown(uCategory, '#categoryDropDownAnchor');
   }
+
+
+  //author callback
+
+  function authorCallback (array){
+    var tempArray = [];
+    array.forEach(function(){
+      tempArray.push(array.author);
+    });
+    return tempArray;
+
+  };
+
+
+
+
+
   //SORT DATE FUNCTION
   function sortDate(A) {
     A.sort(
@@ -194,16 +210,22 @@ function printFromTable(d){
     return z;
   }
 
-  function populateAuthor() {
-    var authorArray = [];
-    for (jj = 0; jj < blogContent.length; jj++) {
-      authorArray.push(blogContent[jj].author);
-    }
-    var x = $.unique(authorArray.map(function(X){
-      return X.author;
-    }))
-    return x;
-  }
+//   function populateAuthor() {
+//
+//     webDB.getAllAuthor();
+//
+// };
+
+
+    // var authorArray = [];
+    // for (jj = 0; jj < blogContent.length; jj++) {
+    //   authorArray.push(blogContent[jj].author);
+    // }
+    // var x = $.unique(authorArray.map(function(X){
+    //   return X.author;
+    // }))
+    // return x;
+
 
   var populateCategory = function() {
     var categoryArray = [];
@@ -233,21 +255,21 @@ function printFromTable(d){
 
 
 
-  function getEtagFromBrowser () {
+  function getEtagFromBrowser() {
     eTagTemp = localStorage.getItem('localEtag', localEtag);
     localEtag = eTagTemp;
     return localEtag;
   }
 
   //shamelessly accepted from J. Hurr. Mad props for the assist!
-    function convertMarkdown(arrayOfObj) {
-      for (ii = 0; ii < arrayOfObj.length; ii++) {
-        if (arrayOfObj[ii].markdown) {
-          arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
-        }
+  function convertMarkdown(arrayOfObj) {
+    for (ii = 0; ii < arrayOfObj.length; ii++) {
+      if (arrayOfObj[ii].markdown) {
+        arrayOfObj[ii].body = marked(arrayOfObj[ii].markdown);
       }
-      return arrayOfObj;
-    };
+    }
+    return arrayOfObj;
+  };
 
   var updateLocalArticles = function() {
     getEtagFromServer();
@@ -261,7 +283,7 @@ function printFromTable(d){
   };
 
   //PRINTS ARTICLES. Takes local data, updated by updateLocal
-   function printFromLocal() {
+  function printFromLocal() {
 
     sortDate(localArticleData);
     localArticleData = convertMarkdown(localArticleData);
@@ -276,8 +298,6 @@ function printFromTable(d){
 
       setEventListeners();
       setExpandContractListeners();
-
     });
-
   }
 }); //ends IIFE
