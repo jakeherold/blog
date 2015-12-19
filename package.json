@@ -1,29 +1,17 @@
 {
-  "name": "blog",
+  "name": "mvc-blog",
   "version": "1.0.0",
-  "description": "",
+  "description": "As we now complete our MVC conversation, we can refactor our app to use good MVC separation of concerns.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jakeherold/blog.git"
-  },
-  "engines":{
-    "node":"4.x"
-  },
-  "author": "Jake Herold",
-	
+  "author": "Code Fellows",
   "license": "ISC",
-
-  "bugs": {
-    "url": "https://github.com/jakeherold/blog/issues"
-  },
-  "homepage": "https://github.com/jakeherold/blog#readme",
   "dependencies": {
-  "express": "^4.13.3",
-  "express-request-proxy": "^1.0.10",
-  "pushstate-server": "^1.8.1"
+    "express": "^4.13.3",
+    "express-request-proxy": "^1.0.10",
+    "pushstate-server": "^1.8.1"
   }
 }
+
