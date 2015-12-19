@@ -1,16 +1,23 @@
 // Configure routes for this app:
-page('/', articleController.index);
-page('/about', aboutController.index);
-page('/', index);
+page.base('/');
+// console.log("IS PAGES WORKING? ");
+// page('', index);
+page('about', about);
+// page('home', index);
+// page('stats', stats);
+// page('secret', secret);
 
 page();
 
-function about() {
-        document.querySelector('p')
-          .textContent = 'viewing about';
-      }
 
-function index() {
-  document.querySelector('p')
-  .textContent = 'viewing index';
-  }
+
+// function index() {
+//
+// }
+//
+// function secret (){
+//
+// }
+// function stats (){
+//
+// }

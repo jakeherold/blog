@@ -1,6 +1,9 @@
-page('/about', about);
+page('/', index);
+page('home', index);
 
-function about() {
-        document.querySelector('p')
-          .textContent = 'viewing about';
-      }
+
+function index() {
+  $('#articleWrapper').fadeIn();
+  $('#aboutDiv').fadeOut('slow');
+
+}
