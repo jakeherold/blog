@@ -2,6 +2,22 @@
 $(function() {
 
 
+//DEBUG UTILITY FUNCTION
+  debug = true;
+
+  function cl (text){
+    if (debug === true){
+      console.log(text)
+    }
+  }
+
+
+
+
+//END DUBUG UTILITY FUNCTION
+
+
+
   //                  WORKZONE
   webDB.init();
   // webDB.setupTables();
@@ -123,16 +139,21 @@ console.log("local needs update");
 
     //Button events listener that changes the display attribute relative to where the button was pressed.
     $(".expandArticleText").on('click', function() {
-      $(this).parent().children().fadeIn();
+      cl("Read More Firing");
+      $(this).prev().prev().children().show();
+    //  $(this).prevUntil().children().show();
       $(this).hide();
-      $(this).next().show();
+       $(this).next().show();
     });
 
     $(".contractArticleText").on('click', function() {
-      $(this).prev().prev().children().not('p:first').fadeOut();
-      $(this).hide();
-      $(this).prev().fadeIn();
-      $(this).parent().prev().children().not('p:first').hide();
+      //$(this).prev().prev().children().not('p:first').fadeOut();
+      cl("less is firing");
+      $(this).prev('.articleContent').hide();
+      // .children().next().not('p:first').hide(); //fades out paragraph
+      $(this).hide(); //hides "read less"
+      $(this).prev().fadeIn(); //shows "read more"
+      //$(this).parent().prev().children().not('p:first').hide();
       $('html,body').animate({
         scrollTop: $(this).closest('.realArticle').offset().top
       }, 400);
