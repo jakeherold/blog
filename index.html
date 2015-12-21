@@ -1,82 +1,81 @@
 <!DOCTYPE html>
 
-  <html>
+<html>
 
-  <head>
-    <title> LumberBlog</title>
-    <meta charset="utf-8"></meta>
-    <link rel="stylesheet" type="text/css" href="/blog.css"></link>
-    <!-- <link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'> -->
-  </head>
+<head>
+  <title> LumberBlog</title>
+  <meta charset="utf-8"></meta>
+  <link rel="stylesheet" type="text/css" href="/blog.css"></link>
+</head>
 
-  <body>
+<body>
 
-    <section id="navBarWrapper">
-      <a href="secret.html">
-        <h1 id="blogName">Adventures with Lumberjake</h1>
-      </a>
-      <header id="navBarHeader">
-        <nav id="navBar">
-          <a class="navItem" id="homeNavElement" href="home">Home</a>
-          <a class="navItem" id="aboutNavElement" href="about">About</a>
-          <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
-        </nav>
-      </header>
+  <section id="navBarWrapper">
+    <a href="secret.html">
+      <h1 id="blogName">Adventures with Lumberjake</h1>
+    </a>
+    <header id="navBarHeader">
+      <nav id="navBar">
+        <a class="navItem" id="homeNavElement" href="home">Home</a>
+        <a class="navItem" id="aboutNavElement" href="about">About</a>
+        <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
+      </nav>
+    </header>
+  </section>
+
+  <div id="aboutDiv">
+    <h1>About the Developer</h1>
+    <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you make bitter swill thats clearly designed to poison your fellow man? </p>
+    <div id="gitAnchor"></div>
+  </div>
+
+
+
+  <div id="dropDownWrapper">
+    <div id="filterByWrapper">
+      <p>Filter by: </p>
+    </div>
+
+    <section class="dropdown" class="authorDropDownWrapper">
+      <select name="authorsDropDown" id="authorDropDownAnchor">
+        <option value="authorPlaceholder">Author</option>
+      </select>
     </section>
 
-    <div id="aboutDiv">
-      <h1>About the Developer</h1>
-      <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you make bitter swill thats clearly designed to poison your fellow man? </p>
-      <div id="gitAnchor"></div>
-    </div>
+    <section class="dropdown" class="categoryDropDownWrapper">
+      <select name="categoryDropDown" id="categoryDropDownAnchor">
+        <option value="categoryPlaceholder"> Category</option>
+      </select>
+    </section>
+  </div>
 
+  <section id="articleWrapper"></section>
 
-
-    <div id="dropDownWrapper">
-      <div id="filterByWrapper">
-        <p>Filter by: </p>
-      </div>
-
-      <section class="dropdown" class="authorDropDownWrapper">
-        <select name="authorsDropDown" id="authorDropDownAnchor">
-          <option value="authorPlaceholder">Author</option>
-        </select>
-      </section>
-
-      <section class="dropdown" class="categoryDropDownWrapper">
-        <select name="categoryDropDown" id="categoryDropDownAnchor">
-          <option value="categoryPlaceholder"> Category</option>
-        </select>
-      </section>
-    </div>
-
-    <section id="articleWrapper"></section>
-
-  </body>
+</body>
 
 
 <!-- Vendor Libraries -->
-  <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-  <script src="/js/handlebars-v4.0.5.js"></script>
-  <script type="text/javascript" src="/js/marked.min.js"></script>
-  <script type="text/javascript" src="/js/html5sql.js"></script>
-  <script type="text/javascript" src="/js/page.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="/js/handlebars-v4.0.5.js"></script>
+<script type="text/javascript" src="/js/marked.min.js"></script>
+<script type="text/javascript" src="/js/html5sql.js"></script>
+<script type="text/javascript" src="/js/page.js"></script>
 
-  <!-- View -->
+<!-- View -->
 
-  <!-- Model -->
-
-
-
-  <!-- Controler -->
-  <script type="text/javascript" src="/js/webdb.js"></script>
-  <script type="text/javascript" src="/js/router.js"></script>
-  <script type="text/javascript" src="/js/articleControler.js"></script>
-  <script type="text/javascript" src="/js/aboutControler.js"></script>
-  <script type="text/javascript" src="/js/router.js"></script>
-  <script type="text/javascript" src="/js/blogObject.js"></script>
-  <script type="text/javascript" src="/js/util.js"></script>
-  <script type="text/javascript" src="/js/blog.js"></script>
+<!-- Model -->
 
 
-  </html>
+
+<!-- Controler -->
+<script type="text/javascript" src="/js/webdb.js"></script>
+<script type="text/javascript" src="/js/router.js"></script>
+<script type="text/javascript" src="/js/articleControler.js"></script>
+<script type="text/javascript" src="/js/aboutControler.js"></script>
+<script type="text/javascript" src="/js/router.js"></script>
+<script type="text/javascript" src="/js/blogObject.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/blog.js"></script>
+
+
+</html>
