@@ -86,6 +86,12 @@ select{
   font-family: serif;
   text-align: center;
 }
+.navItem{
+  display: block;
+}
+.dropdown{
+  text-align: center;
+}
 img{
   max-width: 80%;
 
@@ -114,18 +120,15 @@ img{
     margin-top:1em;
 
   }
-  a .navItem{
+  .navItem{
     display: block;
     text-align: center;
     font-size:.7em;
   }
 
-  .dropdown{
-    text-align: center;
-  }
 
   body{
-    background-color: red;
+    background-color: #EFECCA;
 
   }
   img{
@@ -151,8 +154,13 @@ img{
 /* phablet -> desktop*/
 @media screen and (min-width: 550px) {
   body{
-    background-color: pink;
+    background-color: #EFECCA;
+  }
 
+  .navItem{
+    display: inline-block;
+    padding:1em;
+    text-align: center;
   }
 
 }
@@ -218,8 +226,11 @@ img{
   }
 
   body{
-    background-color: white;
+    background-color: #EFECCA;
 
+  }
+  .navItem{
+    display: inline-block;
   }
 
 }

@@ -1,10 +1,18 @@
-//Each locally stored object is ("localEtag":"numbers and crap", localArticleData: "bunch of article stuff")
 $(function() {
 
 
-  //                  WORKZONE
+//DEBUG UTILITY FUNCTION
+//if debug is set to true, allows console.logs to print
+  debug = false;
+  function cl (text){
+    if (debug === true){
+      console.log(text);
+    }
+  }
+//END DUBUG UTILITY FUNCTION
+
+//BEGIN
   webDB.init();
-  // webDB.setupTables();
 
   var blogData;
   var blogContent;
@@ -16,25 +24,20 @@ $(function() {
     url: 'blogArticles.json',
 
     success: function(data, serveStatus, jqXHR) {
-      console.log(serveStatus);
-
+      cl(serveStatus);
       serverEtag = jqXHR.getResponseHeader('eTag');
       localEtag = localStorage.getItem('localEtag');
-      console.log('ajaxRequest was successful');
+      cl('ajaxRequest was successful');
 
       if (serverEtag == localEtag) {
-console.log("local up to date, printing");
+cl("local up to date, printing");
         webDB.getAllArticles(printFromTable);
-        // blogContent = webDB.getAllArticles();
-        // console.log(blogContent);
 
       } else {
-console.log("local needs update");
+cl("local needs update");
         $.getJSON('blogArticles.json', processJSON);
       }
-
     }
-
   });
 
   //passed an array of objects
@@ -46,12 +49,12 @@ console.log("local needs update");
 
     localStorage.setItem('localEtag', localEtag);
     blogData = data;
-    console.log('processJSON done.');
+    cl('processJSON done.');
   }
 
 
   function printFromTable(d) {
-    console.log("PRINTING FROM TABLE")
+    cl("PRINTING FROM TABLE")
     blogContent = d;
     articleBeingProcessed = d;
     $.get('template.html', function(templateData) {
@@ -60,20 +63,15 @@ console.log("local needs update");
         $articleWrapper = $('#articleWrapper');
         var theTemplate = Handlebars.compile(templateData);
         var finishedArticle = theTemplate(value);
-        // console.log(finishedArticle);
+        // cl(finishedArticle);
         $articleWrapper.append(finishedArticle);
       });
 
       webDB.getUniqueAuthors(authorCallback);
       webDB.getUniqueCategories(categoryCallback);
-      // console.log('WHAT UP ILLY!?');
       setEventListeners();
       setExpandContractListeners();
-
-
     });
-
-
   };
 
 
@@ -97,7 +95,7 @@ console.log("local needs update");
         var text = $(this);
         //shows all articles if Category placeholder is selected
         if (text === "Category") {
-          console.log("cry havoc and let loose the articles regardless of category!");
+          cl("cry havoc and let loose the articles regardless of category!");
           $('.articleContent').each(function() {
             $(this).children().not('p:first').hide();
           });
@@ -115,7 +113,7 @@ console.log("local needs update");
 
 
 
-  // Hides non-first paragraphs on load
+  // Hides non-first paragraphs on load and sets event listeners for expand/contract
   function setExpandContractListeners() {
     $('.articleContent').each(function() {
       $(this).children().not('p:first').hide();
@@ -123,24 +121,25 @@ console.log("local needs update");
 
     //Button events listener that changes the display attribute relative to where the button was pressed.
     $(".expandArticleText").on('click', function() {
-      $(this).parent().children().fadeIn();
-      $(this).hide();
-      $(this).next().show();
+      cl("Read More Firing");
+      $(this).prev().prev().children().show(); //show all article
+      $(this).hide(); //hides "read more" 'button'
+       $(this).next().show(); //shows "read less" 'button'
     });
 
     $(".contractArticleText").on('click', function() {
-      $(this).prev().prev().children().not('p:first').fadeOut();
-      $(this).hide();
-      $(this).prev().fadeIn();
-      $(this).parent().prev().children().not('p:first').hide();
+      cl("less is firing");
+      $(this).prev().prev().prev().children().not('p:first').hide();
+      $(this).hide(); //hides "read less"
+      $(this).prev().fadeIn(); //shows "read more"
       $('html,body').animate({
         scrollTop: $(this).closest('.realArticle').offset().top
-      }, 400);
+      }, 400);//scrolls to top of article on activation of "read less"
     });
   };
 
 
-  //author callback
+  //Prints each author or category to the dropdown
 
   function authorCallback (x){
 
@@ -169,9 +168,6 @@ console.log("local needs update");
     );
   }
 
-
-
-
   $("#aboutNavElement").on('click', function() {
     $('#articleWrapper').fadeOut('slow');
     $('#aboutDiv').fadeIn();
@@ -184,14 +180,11 @@ console.log("local needs update");
 
 
   function convertMarkdown(arrayOfObj) {
-    console.log('about to loop in convertMarkdown');
+    cl('about to loop in convertMarkdown');
 
     arrayOfObj.forEach(function(obj){
-// console.log('in for loop, prior to if');
       if (obj.markdown){
-
         obj.body = marked(obj.markdown);
-        // console.log(obj.body);
       }
     })
     return arrayOfObj;

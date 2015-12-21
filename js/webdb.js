@@ -84,7 +84,7 @@ webDB.getAllArticles = function (callback) {
   callback = callback || function() {};
   html5sql.process(
     // 'SELECT * FROM articles;',
-    'SELECT * FROM articles LIMIT 20',
+    'SELECT * FROM articles LIMIT 40',
     function (tx, result, resultArray) {
       console.log("inside GETALLARTICLES function");
       callback(resultArray);
@@ -95,7 +95,7 @@ webDB.getAllArticles = function (callback) {
 webDB.getUniqueAuthors = function(callback){
   html5sql.process(
     // 'SELECT DISTINCT author FROM articles ORDER BY author;',
-    'SELECT DISTINCT author FROM articles ORDER BY author LIMIT 20;',
+    'SELECT DISTINCT author FROM articles ORDER BY author LIMIT 40;',
 
     function (tx, results, resultArray){
       callback(resultArray);
