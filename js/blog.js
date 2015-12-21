@@ -149,7 +149,7 @@ console.log("local needs update");
     $(".contractArticleText").on('click', function() {
       //$(this).prev().prev().children().not('p:first').fadeOut();
       cl("less is firing");
-      $(this).prev('.articleContent').hide();
+      $(this).prev().prev().prev().children().not('p:first').hide();
       // .children().next().not('p:first').hide(); //fades out paragraph
       $(this).hide(); //hides "read less"
       $(this).prev().fadeIn(); //shows "read more"
