@@ -1,77 +1,81 @@
-<DOCTYPE! html>
+<!DOCTYPE html>
 
 <html>
-    <head>
-        <title> Jakes Blog</title>
-        <meta charset="utf-8"></meta>
-        <link rel="stylesheet" type="text/css" href="blog.css"></link>
-        <link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-    </head>
 
-    <body >
-      <section id="navBarWrapper">
-        <h1 id="blogName">Adventures with Lumberjake</h1>
-        <header id="navBarHeader">
-          <nav id="navBar">
-            <a class="navItem" id="homeNavElement">Home</a>
-            <a class="navItem" id="aboutNavElement">About</a>
-            <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
-          </nav>
-        </header>
-      </section>
+<head>
+  <title> LumberBlog</title>
+  <meta charset="utf-8"></meta>
+  <link rel="stylesheet" type="text/css" href="/blog.css"></link>
+</head>
 
-      <div id="aboutDiv">
-        <h1>About the Developer</h1>
-        <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you even that bitter swill is an ok thing for humans to make? </p>
-      </div>
+<body>
 
+  <section id="navBarWrapper">
+    <a href="secret.html">
+      <h1 id="blogName">Adventures with Lumberjake</h1>
+    </a>
+    <header id="navBarHeader">
+      <nav id="navBar">
+        <a class="navItem" id="homeNavElement" href="home">Home</a>
+        <a class="navItem" id="aboutNavElement" href="about">About</a>
+        <a class="navItem" href="https://github.com/jakeherold/blog" id="gitNav">Github Repo</a>
+      </nav>
+    </header>
+  </section>
 
-
-      <div id="dropDownWrapper">
-        <div id="filterByWrapper"><p>Filter by: </p></div>
-
-        <section class="dropdown" class="authorDropDownWrapper">
-            <select name="authorsDropDown" id="authorDropDownAnchor">
-              <option value="authorPlaceholder">Author</option>
-            </select>
-        </section>
-
-        <section class="dropdown" class="categoryDropDownWrapper">
-            <select name="categoryDropDown" id="categoryDropDownAnchor">
-              <option value="categoryPlaceholder"> Category</option>
-            </select>
-        </section>
-      </div>
-
-      <section id="articleWrapper">
-        <article class="articlePlaceholder">
-          <header>
-            <section class="categoryAnchor" style="display:none"></section>
-
-            <h1></h1>
-              <p class="authorSpot"></p>
-                <div class="publishDate">
-                  <time pubdate datetime="2000-01-01">
-                  </time>
-                </div>
-          </header>
-
-          <section class="articleContent"></section>
-
-          <!-- This part below is, admittedly, difficult to find. Checkout the printArticle Prototype for when we append the paragraph that acts like a button.-->
-          <section class="buttonThatsNotAButton"></section>
+  <div id="aboutDiv">
+    <h1>About the Developer</h1>
+    <p>Jake Herold is a bearded portland hipster with good taste in music, cigars, and whisky. He hates IPAs. Why would you make bitter swill thats clearly designed to poison your fellow man? </p>
+    <div id="gitAnchor"></div>
+  </div>
 
 
-        </article>
-      </section>
 
-    </body>
+  <div id="dropDownWrapper">
+    <div id="filterByWrapper">
+      <p>Filter by: </p>
+    </div>
 
-      <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-      <script src="handlebars-v4.0.5.js"></script>
-      <script type="text/javascript" src="blogObject.js"></script>
-      <script type="text/javascript" src="blogArticles.js"></script>
-      <script type="text/javascript" src="util.js"></script>
-      <script type="text/javascript" src="blog.js"></script>
+    <section class="dropdown" class="authorDropDownWrapper">
+      <select name="authorsDropDown" id="authorDropDownAnchor">
+        <option value="authorPlaceholder">Author</option>
+      </select>
+    </section>
+
+    <section class="dropdown" class="categoryDropDownWrapper">
+      <select name="categoryDropDown" id="categoryDropDownAnchor">
+        <option value="categoryPlaceholder"> Category</option>
+      </select>
+    </section>
+  </div>
+
+  <section id="articleWrapper"></section>
+
+</body>
+
+
+<!-- Vendor Libraries -->
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="/js/handlebars-v4.0.5.js"></script>
+<script type="text/javascript" src="/js/marked.min.js"></script>
+<script type="text/javascript" src="/js/html5sql.js"></script>
+<script type="text/javascript" src="/js/page.js"></script>
+
+<!-- View -->
+
+<!-- Model -->
+
+
+
+<!-- Controler -->
+<script type="text/javascript" src="/js/webdb.js"></script>
+<script type="text/javascript" src="/js/router.js"></script>
+<script type="text/javascript" src="/js/articleControler.js"></script>
+<script type="text/javascript" src="/js/aboutControler.js"></script>
+<script type="text/javascript" src="/js/router.js"></script>
+<script type="text/javascript" src="/js/blogObject.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/blog.js"></script>
+
 
 </html>
